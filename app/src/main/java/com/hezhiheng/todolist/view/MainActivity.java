@@ -1,8 +1,10 @@
-package com.hezhiheng.todolist;
+package com.hezhiheng.todolist.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.hezhiheng.todolist.R;
 
 public class MainActivity extends AppCompatActivity {
 
