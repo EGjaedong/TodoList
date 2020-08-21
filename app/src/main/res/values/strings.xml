@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TodoList</string>
     <string name="logo_image_desc">Todo List</string>
+    <string name="edit_username_hint">username</string>
+    <string name="edit_password_hint">password</string>
+    <string name="login_btn_text">Login</string>
 </resources>

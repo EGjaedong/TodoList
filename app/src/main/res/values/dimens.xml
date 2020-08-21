@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="logo_size">0dp</dimen>
     <dimen name="logo_margin_start_and_end">120dp</dimen>
     <dimen name="logo_margin_top">48dp</dimen>
-    <dimen name="logo_width">120dp</dimen>
-    <dimen name="logo_height">116dp</dimen>
+    <dimen name="edit_username_padding_start_and_right">12dp</dimen>
+    <dimen name="edit_text_line_space">20dp</dimen>
+    <dimen name="edit_text_size">18sp</dimen>
+    <dimen name="edit_text_margin_start_and_end">36dp</dimen>
+    <dimen name="edit_password_margin_top">24dp</dimen>
+    <dimen name="login_btn_margin_start_and_end">36dp</dimen>
+    <dimen name="login_btn_radius">12dp</dimen>
+    <dimen name="login_btn_border">1dp</dimen>
+    <dimen name="login_btn_height">60dp</dimen>
 </resources>
