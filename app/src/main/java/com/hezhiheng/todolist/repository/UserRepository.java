@@ -1,7 +1,5 @@
 package com.hezhiheng.todolist.repository;
 
-import android.app.Application;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
