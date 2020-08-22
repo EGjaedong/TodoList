@@ -1,5 +1,6 @@
 package com.hezhiheng.todolist.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -69,7 +70,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResult != UserFindResultEnum.OK) {
                     showLoginResult(loginResult);
                 } else {
-
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    this.finish();
                 }
                 break;
             case R.id.btn_error_username:
