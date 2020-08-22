@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.hezhiheng.todolist.db.entity.User;
 
@@ -14,4 +15,7 @@ public interface UserDao {
 
     @Insert
     void insertOne(User user);
+
+    @Update
+    void updateUser(User user);
 }
