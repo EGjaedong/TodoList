@@ -1,11 +1,15 @@
 package com.hezhiheng.todolist.repository;
 
+import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.hezhiheng.todolist.ToDoListApplication;
 import com.hezhiheng.todolist.db.dao.UserDao;
 import com.hezhiheng.todolist.db.entity.User;
+import com.hezhiheng.todolist.db.roomdatabases.UserDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +24,7 @@ import okhttp3.Response;
 public class UserRepository {
     private static final String USER_URL = "https://twc-android-bootcamp.github.io/fake-data/data/user.json";
     private static UserRepository instance;
+    private ToDoListApplication toDoListApplication = ToDoListApplication.getInstance();
 
     private UserRepository() {
     }
@@ -33,7 +38,7 @@ public class UserRepository {
         return getInstance();
     }
 
-    private UserDao userDao;
+    private UserDao userDao = UserDatabase.getInstance(toDoListApplication.getApplicationContext()).getUserDao();
 
     private OkHttpClient okHttpClient = new OkHttpClient();
     private Request request = new Request.Builder().url(USER_URL).build();
