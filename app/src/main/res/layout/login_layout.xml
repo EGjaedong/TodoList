@@ -81,6 +81,7 @@
         android:contentDescription="@string/error_desc"
         android:scaleType="fitXY"
         android:src="@drawable/ic_error"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/edit_username"
         app:layout_constraintEnd_toEndOf="@id/edit_username" />
 
@@ -94,6 +95,7 @@
         android:contentDescription="@string/error_desc"
         android:scaleType="fitXY"
         android:src="@drawable/ic_error"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/edit_password"
         app:layout_constraintEnd_toEndOf="@id/edit_password" />
 
