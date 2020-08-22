@@ -8,8 +8,8 @@ import com.hezhiheng.todolist.db.entity.User;
 
 @Dao
 public interface UserDao {
-    @Query("select * from user where name = :name")
-    User getUserByName(String name);
+    @Query("select * from user limit 0,1")
+    User getUserByName();
 
     @Insert
     void insertOne(User user);

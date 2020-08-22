@@ -5,16 +5,20 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Objects;
 
 @Entity(tableName = "user", indices = {@Index(value = {"name"}, unique = true)})
 public class User {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @Expose()
     @ColumnInfo
     private String name;
 
+    @Expose
     @ColumnInfo
     private String password;
 

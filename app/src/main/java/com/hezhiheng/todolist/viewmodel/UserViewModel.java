@@ -14,14 +14,14 @@ public class UserViewModel extends ViewModel {
 
     public UserViewModel(UserRepository repository) {
         userRepository = repository;
+        getUser();
     }
 
-    public void getUser(String userName) {
-        mUserLiveData = userRepository.getUser(userName);
+    public void getUser() {
+        mUserLiveData = userRepository.getUser();
     }
 
     public boolean login(String username, String password) {
-        getUser(username);
         User user = mUserLiveData.getValue();
         if (user != null) {
             return user.getName().equals(username) && user.getPassword().equals(password);
