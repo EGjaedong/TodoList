@@ -1,7 +1,7 @@
 package com.hezhiheng.todolist.viewmodel;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -9,21 +9,31 @@ import com.hezhiheng.todolist.db.entity.User;
 import com.hezhiheng.todolist.repository.UserRepository;
 
 public class UserViewModel extends ViewModel {
-    private final MutableLiveData<User> mUserLiveData = new MutableLiveData<>();
+    private LiveData<User> mUserLiveData;
     private UserRepository userRepository;
 
-    public UserViewModel(UserRepository repository){
+    public UserViewModel(UserRepository repository) {
         userRepository = repository;
     }
 
-    public void getUser(String userName){
-        mUserLiveData.setValue(userRepository.getUser(userName).getValue());
+    public void getUser(String userName) {
+        mUserLiveData = userRepository.getUser(userName);
+    }
+
+    public boolean login(String username, String password) {
+        getUser(username);
+        User user = mUserLiveData.getValue();
+        if (user != null) {
+            return user.getName().equals(username) && user.getPassword().equals(password);
+        }
+        return false;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
         private final UserRepository mRepository;
-        public Factory(){
-            mRepository = UserRepository.getInstance();
+
+        public Factory() {
+            mRepository = new UserRepository();
         }
 
         @NonNull

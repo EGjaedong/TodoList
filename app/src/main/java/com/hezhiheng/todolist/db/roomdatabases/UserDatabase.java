@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.hezhiheng.todolist.db.dao.UserDao;
 import com.hezhiheng.todolist.db.entity.User;
 
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class}, version = 1, exportSchema = false)
 public abstract class UserDatabase extends RoomDatabase {
     private static UserDatabase instance;
     private static final String DATA_NAME = "do-to-list-db";

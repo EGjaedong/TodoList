@@ -4,77 +4,51 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
-import com.hezhiheng.todolist.ToDoListApplication;
-import com.hezhiheng.todolist.db.dao.UserDao;
+import com.hezhiheng.todolist.async.GetResponseTask;
+import com.hezhiheng.todolist.async.GetUserFromDB;
+import com.hezhiheng.todolist.async.SaveUserTask;
 import com.hezhiheng.todolist.db.entity.User;
-import com.hezhiheng.todolist.db.roomdatabases.UserDatabase;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.concurrent.ExecutionException;
 
 public class UserRepository {
-    private static final String USER_URL = "https://twc-android-bootcamp.github.io/fake-data/data/user.json";
-    private static UserRepository instance;
-    private ToDoListApplication toDoListApplication = ToDoListApplication.getInstance();
+    private Gson gson = new Gson();
+    private SaveUserTask saveUserTask = new SaveUserTask();
+    private GetUserFromDB getUserFromDB = new GetUserFromDB();
 
-    private UserRepository() {
+    public UserRepository() {
     }
-
-    public static UserRepository getInstance() {
-        synchronized (UserRepository.class) {
-            if (instance == null) {
-                instance = new UserRepository();
-            }
-        }
-        return getInstance();
-    }
-
-    private UserDao userDao = UserDatabase.getInstance(toDoListApplication.getApplicationContext()).getUserDao();
-
-    private OkHttpClient okHttpClient = new OkHttpClient();
-    private Request request = new Request.Builder().url(USER_URL).build();
-    Call call = okHttpClient.newCall(request);
 
     public LiveData<User> getUser(String userName) {
-        refreshUser(userName);
-        return getUser(userName);
+        MutableLiveData<User> userLiveData = new MutableLiveData<>();
+        User user = findUserFromDB(userName);
+        if (user == null){
+            user = getUserFromService();
+        }
+        userLiveData.setValue(user);
+        return userLiveData;
     }
 
-    private void refreshUser(String userName) {
-        MutableLiveData<User> result = new MutableLiveData<>();
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                result.postValue(null);
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        final String responseString = response.body().string();
-                        User user = new Gson().fromJson(responseString, User.class);
-                        result.postValue(user);
-                    }
-                }
-            }
-        });
-        LiveData<User> userFromDB = userDao.getUser(userName);
-        if (result.getValue() != null){
-            if (userFromDB.getValue() == null){
-                userDao.insertOne(result.getValue());
-                return;
-            }
-            if (!result.getValue().equals(userFromDB.getValue())) {
-                userDao.updateUser(result.getValue());
-            }
+    private User getUserFromService() {
+        User user = null;
+        GetResponseTask getResponseTask = new GetResponseTask();
+        try {
+            String response = getResponseTask.execute().get();
+            user = gson.fromJson(response, User.class);
+            saveUserTask.execute(user);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
+        return user;
+    }
+
+    private User findUserFromDB(String userName) {
+        User user = null;
+        try {
+            user = getUserFromDB.execute(userName).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }
