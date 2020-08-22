@@ -35,6 +35,11 @@ public class LoginActivity extends AppCompatActivity {
     ImageButton errorUsernameBtn;
     @BindView(R.id.btn_error_password)
     ImageButton errorPasswordBtn;
+    @BindView(R.id.login_btn)
+    Button btnLogin;
+
+    private boolean usernameJudge = false;
+    private boolean passwordJudge = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,19 +67,33 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnTextChanged(R.id.edit_username)
     void judgeUsernameText(CharSequence text) {
-        if (regularJudge(usernamePattern, text.toString())) {
+        usernameJudge = regularJudge(usernamePattern, text.toString());
+        if (usernameJudge) {
             hideErrorBtn(errorUsernameBtn);
         } else {
             showErrorBtn(errorUsernameBtn);
         }
+        isBtnLoginAvailable();
     }
 
     @OnTextChanged(R.id.edit_password)
     void judgePasswordText(CharSequence text) {
-        if (regularJudge(passwordPattern, text.toString())) {
+        passwordJudge = regularJudge(passwordPattern, text.toString());
+        if (passwordJudge) {
             hideErrorBtn(errorPasswordBtn);
         } else {
             showErrorBtn(errorPasswordBtn);
+        }
+        isBtnLoginAvailable();
+    }
+
+    private void isBtnLoginAvailable() {
+        if (usernameJudge && passwordJudge) {
+            btnLogin.setEnabled(true);
+            btnLogin.setBackgroundResource(R.drawable.login_btn_available);
+        } else {
+            btnLogin.setEnabled(false);
+            btnLogin.setBackgroundResource(R.drawable.login_btn_unavailable);
         }
     }
 
