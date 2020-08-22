@@ -1,15 +1,14 @@
 package com.hezhiheng.todolist.db.entity;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
-@Entity(tableName = "user")
+@Entity(tableName = "user", indices = {@Index(value = {"name"}, unique = true)})
 public class User {
-    @NonNull
     @PrimaryKey
     private int id;
 

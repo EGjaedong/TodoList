@@ -2,7 +2,6 @@ package com.hezhiheng.todolist.repository;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.Dao;
 
 import com.google.gson.Gson;
 import com.hezhiheng.todolist.db.entity.User;
@@ -17,7 +16,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-@Dao
 public class UserRepository {
     private static final String USER_URL = "https://twc-android-bootcamp.github.io/fake-data/data/user.json";
 
