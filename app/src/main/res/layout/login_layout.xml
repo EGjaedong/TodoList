@@ -85,6 +85,18 @@
         app:layout_constraintBottom_toBottomOf="@id/edit_username"
         app:layout_constraintEnd_toEndOf="@id/edit_username" />
 
+    <TextView
+        android:id="@+id/username_error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/error_text_height"
+        android:background="@color/error_text_background_color"
+        android:gravity="center"
+        android:text="@string/username_error_text"
+        android:textColor="@color/error_text_color"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/edit_username"
+        app:layout_constraintTop_toBottomOf="@id/btn_error_username" />
+
     <ImageButton
         android:id="@+id/btn_error_password"
         android:layout_width="@dimen/btn_error_ico_size"
@@ -98,6 +110,18 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/edit_password"
         app:layout_constraintEnd_toEndOf="@id/edit_password" />
+
+    <TextView
+        android:id="@+id/password_error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/error_text_height"
+        android:background="@color/error_text_background_color"
+        android:gravity="center"
+        android:text="@string/password_error_text"
+        android:textColor="@color/error_text_color"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/edit_password"
+        app:layout_constraintTop_toBottomOf="@id/btn_error_password" />
 
 
     <androidx.constraintlayout.widget.Guideline

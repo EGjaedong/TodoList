@@ -5,4 +5,6 @@
     <string name="edit_password_hint">password</string>
     <string name="login_btn_text">Login</string>
     <string name="error_desc">error</string>
+    <string name="username_error_text">Username must be 3 ~ 12 letters or numbers</string>
+    <string name="password_error_text">The password length must be 6 ~ 18 characters</string>
 </resources>

@@ -8,4 +8,6 @@
     <color name="login_btn_color_available">#5BA5EF</color>
     <color name="login_btn_text_unavailable_color">#000000</color>
     <color name="login_btn_text_available_color">#FFFFFF</color>
+    <color name="error_text_color">#FFFFFF</color>
+    <color name="error_text_background_color">#181818</color>
 </resources>

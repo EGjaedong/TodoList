@@ -1,10 +1,12 @@
 package com.hezhiheng.todolist.view;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -37,6 +39,10 @@ public class LoginActivity extends AppCompatActivity {
     ImageButton errorPasswordBtn;
     @BindView(R.id.login_btn)
     Button btnLogin;
+    @BindView(R.id.username_error_text)
+    TextView usernameErrorText;
+    @BindView(R.id.password_error_text)
+    TextView passwordErrorText;
 
     private boolean usernameJudge = false;
     private boolean passwordJudge = false;
@@ -57,10 +63,22 @@ public class LoginActivity extends AppCompatActivity {
                 model.login(editUsername.getText().toString(), editPassword.getText().toString());
                 break;
             case R.id.btn_error_username:
-                Toast.makeText(this, "用户名校验错误", Toast.LENGTH_SHORT).show();
+                usernameErrorText.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        usernameErrorText.setVisibility(View.GONE);
+                    }
+                }, 3000);
                 break;
             case R.id.btn_error_password:
-                Toast.makeText(this, "密码校验错误", Toast.LENGTH_SHORT).show();
+                passwordErrorText.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        passwordErrorText.setVisibility(View.GONE);
+                    }
+                }, 3000);
                 break;
         }
     }
@@ -98,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void hideErrorBtn(ImageButton button) {
-        button.setVisibility(View.INVISIBLE);
+        button.setVisibility(View.GONE);
     }
 
     private void showErrorBtn(ImageButton button) {
