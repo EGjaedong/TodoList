@@ -9,4 +9,6 @@
     <string name="password_error_text">The password length must be 6 ~ 18 characters</string>
     <string name="user_not_found_message">user not exist!</string>
     <string name="password_error_message">password error!</string>
+    <string name="user_already_login_file" translatable="false">userAlreadyLogin</string>
+    <string name="user_already_login_key">loginKey</string>
 </resources>

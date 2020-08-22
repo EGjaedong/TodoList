@@ -1,6 +1,8 @@
 package com.hezhiheng.todolist.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -29,6 +31,11 @@ import butterknife.OnTextChanged;
 
 public class LoginActivity extends AppCompatActivity {
     private UserViewModel model;
+    private static final int USER_ALREADY_LOGIN_FLAG = 123456;
+    private static final int DEFAULT_LOGIN_FLAG = 0;
+    private boolean usernameJudge = false;
+    private boolean passwordJudge = false;
+    private SharedPreferences sharedPreferences;
 
     @BindView(R.id.edit_username)
     EditText editUsername;
@@ -48,9 +55,11 @@ public class LoginActivity extends AppCompatActivity {
     String userNotFound;
     @BindString(R.string.password_error_message)
     String passwordError;
+    @BindString(R.string.user_already_login_file)
+    String userAlreadyLoginFileName;
+    @BindString(R.string.user_already_login_key)
+    String userAlreadyLoginKey;
 
-    private boolean usernameJudge = false;
-    private boolean passwordJudge = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +67,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_layout);
         UserViewModel.Factory factory = new UserViewModel.Factory();
         model = new ViewModelProvider(this, factory).get(UserViewModel.class);
+        sharedPreferences = getSharedPreferences(userAlreadyLoginFileName, Context.MODE_PRIVATE);
         ButterKnife.bind(this);
+        if (judgeUserIsAlreadyLogin()) {
+            goMainActivity();
+        }
+    }
+
+    private boolean judgeUserIsAlreadyLogin() {
+        return sharedPreferences.getInt(userAlreadyLoginKey, DEFAULT_LOGIN_FLAG)
+                == USER_ALREADY_LOGIN_FLAG;
     }
 
     @OnClick({R.id.login_btn, R.id.btn_error_username, R.id.btn_error_password})
@@ -70,9 +88,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResult != UserFindResultEnum.OK) {
                     showLoginResult(loginResult);
                 } else {
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    this.finish();
+                    setAlreadyLogin();
+                    goMainActivity();
                 }
                 break;
             case R.id.btn_error_username:
@@ -82,6 +99,18 @@ public class LoginActivity extends AppCompatActivity {
                 showErrorMessage(passwordErrorText);
                 break;
         }
+    }
+
+    private void setAlreadyLogin() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(userAlreadyLoginKey, USER_ALREADY_LOGIN_FLAG);
+        editor.apply();
+    }
+
+    private void goMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 
     private void showLoginResult(UserFindResultEnum loginResult) {
