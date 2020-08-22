@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hezhiheng.todolist.db.entity.User;
+import com.hezhiheng.todolist.enums.UserFindResultEnum;
 import com.hezhiheng.todolist.repository.UserRepository;
 
 public class UserViewModel extends ViewModel {
@@ -21,12 +22,19 @@ public class UserViewModel extends ViewModel {
         mUserLiveData = userRepository.getUser();
     }
 
-    public boolean login(String username, String password) {
+    public UserFindResultEnum login(String username, String password) {
         User user = mUserLiveData.getValue();
         if (user != null) {
-            return user.getName().equals(username) && user.getPassword().equals(password);
+            if (!user.getName().equals(username)){
+                return UserFindResultEnum.USER_NOT_FOUND;
+            }
+            if (user.getName().equals(username) && user.getPassword().equals(password)){
+                return UserFindResultEnum.OK;
+            }else {
+                return UserFindResultEnum.PASSWORD_ERROR;
+            }
         }
-        return false;
+        return UserFindResultEnum.USER_NOT_FOUND;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

@@ -14,11 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hezhiheng.todolist.R;
+import com.hezhiheng.todolist.enums.UserFindResultEnum;
 import com.hezhiheng.todolist.viewmodel.UserViewModel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,8 +28,6 @@ import butterknife.OnTextChanged;
 
 public class LoginActivity extends AppCompatActivity {
     private UserViewModel model;
-    private String usernamePattern = "^[\\d|a-z|A-Z]{3,12}$";
-    private String passwordPattern = "^[\\w|\\W]{6,18}$";
 
     @BindView(R.id.edit_username)
     EditText editUsername;
@@ -43,6 +43,10 @@ public class LoginActivity extends AppCompatActivity {
     TextView usernameErrorText;
     @BindView(R.id.password_error_text)
     TextView passwordErrorText;
+    @BindString(R.string.user_not_found_message)
+    String userNotFound;
+    @BindString(R.string.password_error_message)
+    String passwordError;
 
     private boolean usernameJudge = false;
     private boolean passwordJudge = false;
@@ -60,31 +64,45 @@ public class LoginActivity extends AppCompatActivity {
     void loginClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
-                model.login(editUsername.getText().toString(), editPassword.getText().toString());
+                UserFindResultEnum loginResult = model.login(editUsername.getText().toString(),
+                        editPassword.getText().toString());
+                if (loginResult != UserFindResultEnum.OK) {
+                    showLoginResult(loginResult);
+                } else {
+
+                }
                 break;
             case R.id.btn_error_username:
-                usernameErrorText.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        usernameErrorText.setVisibility(View.GONE);
-                    }
-                }, 3000);
+                showErrorMessage(usernameErrorText);
                 break;
             case R.id.btn_error_password:
-                passwordErrorText.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        passwordErrorText.setVisibility(View.GONE);
-                    }
-                }, 3000);
+                showErrorMessage(passwordErrorText);
                 break;
         }
     }
 
+    private void showLoginResult(UserFindResultEnum loginResult) {
+        switch (loginResult) {
+            case USER_NOT_FOUND:
+                showToastOfLoginResult(userNotFound);
+                break;
+            case PASSWORD_ERROR:
+                showToastOfLoginResult(passwordError);
+        }
+    }
+
+    private void showToastOfLoginResult(String loginResultMessage) {
+        Toast.makeText(this, loginResultMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showErrorMessage(TextView textView) {
+        textView.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(() -> textView.setVisibility(View.GONE), 3000);
+    }
+
     @OnTextChanged(R.id.edit_username)
     void judgeUsernameText(CharSequence text) {
+        String usernamePattern = "^[\\d|a-z|A-Z]{3,12}$";
         usernameJudge = regularJudge(usernamePattern, text.toString());
         if (usernameJudge) {
             hideErrorBtn(errorUsernameBtn);
@@ -96,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnTextChanged(R.id.edit_password)
     void judgePasswordText(CharSequence text) {
+        String passwordPattern = "^[\\w|\\W]{6,18}$";
         passwordJudge = regularJudge(passwordPattern, text.toString());
         if (passwordJudge) {
             hideErrorBtn(errorPasswordBtn);

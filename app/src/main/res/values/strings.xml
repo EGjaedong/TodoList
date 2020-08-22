@@ -7,4 +7,6 @@
     <string name="error_desc">error</string>
     <string name="username_error_text">Username must be 3 ~ 12 letters or numbers</string>
     <string name="password_error_text">The password length must be 6 ~ 18 characters</string>
+    <string name="user_not_found_message">user not exist!</string>
+    <string name="password_error_message">password error!</string>
 </resources>
