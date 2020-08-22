@@ -19,6 +19,19 @@ import okhttp3.Response;
 
 public class UserRepository {
     private static final String USER_URL = "https://twc-android-bootcamp.github.io/fake-data/data/user.json";
+    private static UserRepository instance;
+
+    private UserRepository() {
+    }
+
+    public static UserRepository getInstance() {
+        synchronized (UserRepository.class) {
+            if (instance == null) {
+                instance = new UserRepository();
+            }
+        }
+        return getInstance();
+    }
 
     private UserDao userDao;
 
@@ -31,7 +44,7 @@ public class UserRepository {
         return getUser(userName);
     }
 
-    private void refreshUser(String userName){
+    private void refreshUser(String userName) {
         MutableLiveData<User> result = new MutableLiveData<>();
         call.enqueue(new Callback() {
             @Override
@@ -51,8 +64,14 @@ public class UserRepository {
             }
         });
         LiveData<User> userFromDB = userDao.getUser(userName);
-        if (result.getValue() != null && !result.getValue().equals(userFromDB.getValue())){
-            userDao.updateUser(result.getValue());
+        if (result.getValue() != null){
+            if (userFromDB.getValue() == null){
+                userDao.insertOne(result.getValue());
+                return;
+            }
+            if (!result.getValue().equals(userFromDB.getValue())) {
+                userDao.updateUser(result.getValue());
+            }
         }
     }
 }
