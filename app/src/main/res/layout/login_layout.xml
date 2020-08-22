@@ -28,7 +28,7 @@
         app:layout_constraintGuide_percent="0.28" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/edit_username_top"
+        android:id="@+id/edit_username_top_guide_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -50,7 +50,7 @@
         android:textSize="@dimen/edit_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_username_top" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_username_top_guide_line" />
 
     <EditText
         android:id="@+id/edit_password"
@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_username" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/login_btn_top"
+        android:id="@+id/login_btn_top_guide_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -90,7 +90,7 @@
         android:textColor="@color/login_btn_text_unavailable_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_btn_top" />
+        app:layout_constraintTop_toBottomOf="@+id/login_btn_top_guide_line" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

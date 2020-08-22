@@ -12,7 +12,7 @@ import com.hezhiheng.todolist.db.entity.User;
 @Database(entities = {User.class}, version = 1)
 public abstract class UserDatabase extends RoomDatabase {
     private static UserDatabase instance;
-    private static final String DATA_NAME = "do_to_list_db";
+    private static final String DATA_NAME = "do-to-list-db";
 
     public static UserDatabase getInstance(Context context){
         synchronized (UserDatabase.class){

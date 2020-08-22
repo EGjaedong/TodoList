@@ -52,7 +52,7 @@ public class UserRepository {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                result.setValue(null);
+                result.postValue(null);
             }
 
             @Override
@@ -61,7 +61,7 @@ public class UserRepository {
                     if (response.body() != null) {
                         final String responseString = response.body().string();
                         User user = new Gson().fromJson(responseString, User.class);
-                        result.setValue(user);
+                        result.postValue(user);
                     }
                 }
             }
