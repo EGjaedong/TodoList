@@ -37,4 +37,6 @@
     <dimen name="date_select_radius">8dp</dimen>
     <dimen name="date_select_border">1dp</dimen>
     <dimen name="date_select_width">240dp</dimen>
+    <dimen name="btn_add_size">64dp</dimen>
+    <dimen name="btn_add_margin">8dp</dimen>
 </resources>
