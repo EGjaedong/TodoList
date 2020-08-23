@@ -16,4 +16,7 @@
     <string name="remind_title_text">标题…</string>
     <string name="remind_desc_text">描述…</string>
     <string name="btn_save_remind_desc">保存提醒</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
 </resources>

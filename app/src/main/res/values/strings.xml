@@ -18,4 +18,7 @@
     <string name="remind_title_text">Title…</string>
     <string name="remind_desc_text">Description…</string>
     <string name="btn_save_remind_desc">Save Remind</string>
+    <string name="year">year</string>
+    <string name="month">month</string>
+    <string name="day">day</string>
 </resources>
