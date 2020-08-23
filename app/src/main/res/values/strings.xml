@@ -14,4 +14,5 @@
     <string name="btn_back">Go back</string>
     <string name="date_button_text">Date</string>
     <string name="remind_text">Remind</string>
+    <string name="btn_add_item">add</string>
 </resources>

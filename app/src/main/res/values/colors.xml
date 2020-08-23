@@ -17,4 +17,5 @@
     <color name="switch_on_color">#6BA5E9</color>
     <color name="switch_off_color">#BCBBBB</color>
     <color name="switch_track_color">#BCBBBB</color>
+    <color name="btn_add_background_color">#FFFFFF</color>
 </resources>
