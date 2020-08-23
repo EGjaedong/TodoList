@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.login_btn, R.id.btn_error_username, R.id.btn_error_password})
-    void loginClick(View view) {
+    void btnClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
                 UserFindResultEnum loginResult = model.login(editUsername.getText().toString(),

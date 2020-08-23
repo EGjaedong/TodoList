@@ -134,17 +134,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+    <CalendarView
         android:id="@+id/date_selector"
-        android:layout_width="@dimen/date_select_width"
-        android:layout_height="@dimen/date_select_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/date_select_margin_top"
         android:background="@drawable/date_select_background"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:mcv_selectionColor="@color/date_select_border_color"
-        app:mcv_showOtherDates="other_months" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
