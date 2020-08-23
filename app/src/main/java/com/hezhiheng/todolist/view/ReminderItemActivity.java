@@ -7,6 +7,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.hezhiheng.todolist.R;
 
 import java.time.LocalDate;
-import java.time.Month;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +36,8 @@ public class ReminderItemActivity extends AppCompatActivity {
     @BindView(R.id.btn_save_remind)
     ImageButton btnSaveRemind;
     private LocalDate selectDate;
+    @BindView(R.id.btn_back)
+    ImageButton btnBack;
 
     private boolean showCalender = false;
 
@@ -49,21 +51,32 @@ public class ReminderItemActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick({R.id.btn_select_date, R.id.btn_save_remind})
-    void btnClick(Button button) {
-        switch (button.getId()) {
+    @OnClick({R.id.btn_select_date, R.id.btn_save_remind, R.id.btn_back})
+    void btnClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_back:
+                this.finish();
+                break;
             case R.id.btn_select_date:
                 if (!showCalender) {
-                    calendarContainer.setVisibility(View.VISIBLE);
-                    showCalender = true;
+                    calendarChangeVisibility(true);
                 } else {
-                    calendarContainer.setVisibility(View.GONE);
-                    showCalender = false;
+                    calendarChangeVisibility(false);
                 }
                 break;
             case R.id.btn_save_remind:
-
+                Toast.makeText(this, "save", Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    void calendarChangeVisibility(Boolean toVisibility) {
+        if (toVisibility){
+            calendarContainer.setVisibility(View.VISIBLE);
+            showCalender = true;
+        }else {
+            calendarContainer.setVisibility(View.GONE);
+            showCalender = false;
         }
     }
 }
