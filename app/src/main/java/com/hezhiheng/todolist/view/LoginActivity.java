@@ -23,6 +23,7 @@ import com.hezhiheng.todolist.viewmodel.UserViewModel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +60,10 @@ public class LoginActivity extends AppCompatActivity {
     String userAlreadyLoginFileName;
     @BindString(R.string.user_already_login_key)
     String userAlreadyLoginKey;
+    @BindColor(R.color.login_btn_text_available_color)
+    int btnLoginAvailableTextColor;
+    @BindColor(R.color.login_btn_text_unavailable_color)
+    int btnLoginUnavailableTextColor;
 
 
     @Override
@@ -69,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         model = new ViewModelProvider(this, factory).get(UserViewModel.class);
         sharedPreferences = getSharedPreferences(userAlreadyLoginFileName, Context.MODE_PRIVATE);
         ButterKnife.bind(this);
+        btnLogin.setEnabled(false);
         if (judgeUserIsAlreadyLogin()) {
             goMainActivity();
         }
@@ -159,9 +165,11 @@ public class LoginActivity extends AppCompatActivity {
     private void isBtnLoginAvailable() {
         if (usernameJudge && passwordJudge) {
             btnLogin.setEnabled(true);
+            btnLogin.setTextColor(btnLoginAvailableTextColor);
             btnLogin.setBackgroundResource(R.drawable.login_btn_available);
         } else {
             btnLogin.setEnabled(false);
+            btnLogin.setTextColor(btnLoginUnavailableTextColor);
             btnLogin.setBackgroundResource(R.drawable.login_btn_unavailable);
         }
     }
