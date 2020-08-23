@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,8 @@ public class ReminderItemActivity extends AppCompatActivity {
     Button btnSelectDate;
     @BindView(R.id.date_selector)
     CalendarView calendarView;
+    @BindView(R.id.calendar_container)
+    FrameLayout calendarContainer;
 
 
     @Override
@@ -30,5 +33,6 @@ public class ReminderItemActivity extends AppCompatActivity {
 
     @OnClick({R.id.btn_select_date})
     void btnClick(View view) {
+        calendarContainer.setVisibility(View.VISIBLE);
     }
 }

@@ -13,4 +13,8 @@
         <item name="colorPrimary">@color/status_bar_color</item>
         <item name="colorPrimaryDark">@color/status_bar_color</item>
     </style>
+
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/date_text_color</item>
+    </style>
 </resources>

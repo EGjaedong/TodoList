@@ -23,4 +23,5 @@
     <color name="btn_save_background_color">#FFFFFF</color>
     <color name="date_select_border_color">#B6B6B6</color>
     <color name="date_select_background_color">#FFFFFF</color>
+    <color name="date_text_color">#414C66</color>
 </resources>
