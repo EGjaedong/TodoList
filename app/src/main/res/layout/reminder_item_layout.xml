@@ -44,7 +44,7 @@
         <Button
             android:id="@+id/btn_select_date"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/btn_date"
+            android:layout_height="@dimen/btn_date_height"
             android:background="@drawable/date_button_background"
             android:stateListAnimator="@null"
             android:text="@string/date_button_text"
@@ -110,12 +110,12 @@
         android:layout_height="@dimen/remind_desc_height"
         android:autofillHints="Description"
         android:background="@drawable/remind_edit_text_background"
+        android:gravity="start"
         android:hint="@string/remind_desc_text"
         android:inputType="text"
-        android:gravity="start"
-        android:paddingTop="@dimen/remind_desc_padding"
         android:lineSpacingExtra="@dimen/remind_desc_line_space"
         android:paddingStart="@dimen/remind_desc_padding"
+        android:paddingTop="@dimen/remind_desc_padding"
         android:paddingEnd="@dimen/remind_desc_padding"
         android:textColor="@color/remind_title_text_color"
         android:textSize="@dimen/title_text_size"
@@ -128,10 +128,23 @@
         android:layout_height="@dimen/btn_save_remind_size"
         android:layout_marginEnd="@dimen/btn_save_remind_margin"
         android:layout_marginBottom="@dimen/btn_save_remind_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@mipmap/check_selected"
         android:background="@color/btn_save_background_color"
-        android:contentDescription="@string/btn_save_remind_desc" />
+        android:contentDescription="@string/btn_save_remind_desc"
+        android:src="@mipmap/check_selected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/date_selector"
+        android:layout_width="@dimen/date_select_width"
+        android:layout_height="@dimen/date_select_height"
+        android:layout_marginTop="@dimen/date_select_margin_top"
+        android:background="@drawable/date_select_background"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mcv_selectionColor="@color/date_select_border_color"
+        app:mcv_showOtherDates="other_months" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

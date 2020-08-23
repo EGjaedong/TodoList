@@ -21,4 +21,6 @@
     <color name="remind_title_text_color">#7B7B7B</color>
     <color name="edit_text_color">#FFFFFF</color>
     <color name="btn_save_background_color">#FFFFFF</color>
+    <color name="date_select_border_color">#B6B6B6</color>
+    <color name="date_select_background_color">#FFFFFF</color>
 </resources>
