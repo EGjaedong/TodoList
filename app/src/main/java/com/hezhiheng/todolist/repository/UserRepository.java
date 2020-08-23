@@ -31,15 +31,13 @@ public class UserRepository {
 
     private User getUserFromService() {
         User user = null;
-        GetResponseTask getResponseTask = new GetResponseTask();
         try {
-            String response = getResponseTask.execute().get();
+            String response = new GetResponseTask().execute().get();
             user = gson.fromJson(response, User.class);
             if (PASSWORD_CIPHER_TEXT.equals(user.getPassword())){
                 user.setPassword(ORIGINAL_PASSWORD);
             }
-            SaveUserTask saveUserTask = new SaveUserTask();
-            saveUserTask.execute(user);
+            new SaveUserTask().execute(user);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -49,8 +47,7 @@ public class UserRepository {
     private User findUserFromDB() {
         User user = null;
         try {
-            GetUserFromDB getUserFromDB = new GetUserFromDB();
-            user = getUserFromDB.execute().get();
+            user = new GetUserFromDB().execute().get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
