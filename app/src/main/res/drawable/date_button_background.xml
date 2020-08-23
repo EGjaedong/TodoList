@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/item_bar_background_color"/>
+    <stroke
+        android:width="@dimen/item_bar_border_width"
+        android:color="@color/item_bar_border_color"/>
+</shape>

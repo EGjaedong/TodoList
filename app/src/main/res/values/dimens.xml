@@ -16,4 +16,12 @@
     <dimen name="btn_error_margin_bottom">12dp</dimen>
     <dimen name="btn_error_margin_end">4dp</dimen>
     <dimen name="error_text_height">24dp</dimen>
+    <dimen name="item_bar_layout_size">0dp</dimen>
+    <dimen name="item_bar_border_width">1dp</dimen>
+    <dimen name="back_button_size">24dp</dimen>
+    <dimen name="btn_back_margin_start">8dp</dimen>
+    <dimen name="btn_date">28dp</dimen>
+    <dimen name="switch_radius">20dp</dimen>
+    <dimen name="switch_border">1dp</dimen>
+    <dimen name="remind_text_margin_end">4dp</dimen>
 </resources>

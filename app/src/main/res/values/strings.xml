@@ -10,5 +10,8 @@
     <string name="user_not_found_message">user not exist!</string>
     <string name="password_error_message">password error!</string>
     <string name="user_already_login_file" translatable="false">userAlreadyLogin</string>
-    <string name="user_already_login_key">loginKey</string>
+    <string name="user_already_login_key" translatable="false">loginKey</string>
+    <string name="btn_back">Go back</string>
+    <string name="date_button_text">Date</string>
+    <string name="remind_text">Remind</string>
 </resources>

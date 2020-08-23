@@ -10,4 +10,11 @@
     <color name="login_btn_text_available_color">#FFFFFF</color>
     <color name="error_text_color">#FFFFFF</color>
     <color name="error_text_background_color">#181818</color>
+    <color name="item_bar_background_color">#FFFCFC</color>
+    <color name="item_bar_border_color">#F8F8F8</color>
+    <color name="finish_remind_check_box_color">#6BA5E9</color>
+    <color name="btn_select_data_text_color">#EDEAEA</color>
+    <color name="switch_on_color">#6BA5E9</color>
+    <color name="switch_off_color">#BCBBBB</color>
+    <color name="switch_track_color">#BCBBBB</color>
 </resources>

@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.hezhiheng.todolist.R;
 
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
