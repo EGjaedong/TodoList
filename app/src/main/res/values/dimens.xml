@@ -24,4 +24,12 @@
     <dimen name="switch_radius">20dp</dimen>
     <dimen name="switch_border">1dp</dimen>
     <dimen name="remind_text_margin_end">4dp</dimen>
+    <dimen name="remind_title_height">56dp</dimen>
+    <dimen name="title_text_size">24sp</dimen>
+    <dimen name="remind_title_text_padding">12dp</dimen>
+    <dimen name="remind_desc_line_space">4dp</dimen>
+    <dimen name="remind_desc_height">0dp</dimen>
+    <dimen name="remind_desc_padding">12dp</dimen>
+    <dimen name="btn_save_remind_margin">12dp</dimen>
+    <dimen name="btn_save_remind_size">64dp</dimen>
 </resources>

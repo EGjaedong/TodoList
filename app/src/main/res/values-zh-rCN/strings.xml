@@ -12,4 +12,8 @@
     <string name="btn_back">返回</string>
     <string name="date_button_text">日期</string>
     <string name="remind_text">提醒</string>
+    <string name="btn_add_item">添加</string>
+    <string name="remind_title_text">标题…</string>
+    <string name="remind_desc_text">描述…</string>
+    <string name="btn_save_remind_desc">保存提醒</string>
 </resources>
