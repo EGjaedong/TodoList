@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +24,14 @@ public class ReminderItemActivity extends AppCompatActivity {
     CalendarView calendarView;
     @BindView(R.id.calendar_container)
     FrameLayout calendarContainer;
+    @BindView(R.id.remind_title)
+    EditText editRemindTitle;
+    @BindView(R.id.remind_desc)
+    EditText editRemindDesc;
+    @BindView(R.id.btn_save_remind)
+    ImageButton btnSaveRemind;
 
+    private boolean showCalender = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,8 +40,18 @@ public class ReminderItemActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.btn_select_date})
-    void btnClick(View view) {
-        calendarContainer.setVisibility(View.VISIBLE);
+    @OnClick({R.id.btn_select_date, R.id.btn_save_remind})
+    void btnClick(Button button) {
+        switch (button.getId()){
+            case R.id.btn_select_date:
+                if (!showCalender){
+                    calendarContainer.setVisibility(View.VISIBLE);
+                    showCalender = true;
+                }else {
+                    calendarContainer.setVisibility(View.GONE);
+                    showCalender = false;
+                }
+                break;
+        }
     }
 }
