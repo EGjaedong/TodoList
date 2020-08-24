@@ -23,6 +23,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView remindListContainer;
 
     private ReminderItemViewModel remindViewModel;
-    private RemindItemAdapter remindItemAdapter;
 
     @BindDimen(R.dimen.recycler_view_item_space)
     int itemSpace;
@@ -89,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void showRemindList(List<Reminder> reminderList) {
         if (reminderList != null && reminderList.size() != 0) {
-            remindItemAdapter = new RemindItemAdapter(this, reminderList);
+            reminderList.sort(Comparator.comparing(Reminder::getDate));
+            RemindItemAdapter remindItemAdapter = new RemindItemAdapter(this, reminderList);
             remindListContainer.setAdapter(remindItemAdapter);
             remindListContainer.setLayoutManager(new LinearLayoutManager(this));
             remindListContainer.addItemDecoration(new SpacesItemDecoration(itemSpace));
