@@ -45,4 +45,8 @@
     <dimen name="text_month_size">12sp</dimen>
     <dimen name="text_month_top">4dp</dimen>
     <dimen name="btn_more_size">24dp</dimen>
+    <dimen name="item_border_width">1dp</dimen>
+    <dimen name="finish_check_box_in_main_margin_start">24dp</dimen>
+    <dimen name="remind_title_in_main_margin_start">24dp</dimen>
+    <dimen name="remind_date_text_in_main_margin_end">24dp</dimen>
 </resources>

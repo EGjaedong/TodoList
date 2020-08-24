@@ -28,4 +28,5 @@
     <color name="text_date_color">#6BA5E9</color>
     <color name="text_month_color">#777777</color>
     <color name="btn_more_background_color">#FFFCFC</color>
+    <color name="item_border_color">#EFEFEF</color>
 </resources>
