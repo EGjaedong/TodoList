@@ -109,7 +109,7 @@ public class ReminderItemActivity extends AppCompatActivity {
                 break;
             case R.id.btn_save_remind:
                 getRemindData();
-                if (title != null && selectDate != null) {
+                if (title != null && !title.equals("") && selectDate != null) {
                     if (remindViewModel.saveRemind(title, desc, selectDate, isRemindFinish, isSetSystemRemind)) {
                         this.finish();
                     }
