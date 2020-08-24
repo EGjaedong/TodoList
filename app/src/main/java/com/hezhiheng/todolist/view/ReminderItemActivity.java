@@ -72,18 +72,26 @@ public class ReminderItemActivity extends AppCompatActivity {
         remindViewModel = new ViewModelProvider(this, factory).get(ReminderItemViewModel.class);
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             selectDate = LocalDate.of(year, month + MONTH_ADD_NUMBER, dayOfMonth);
-            btnSelectDate.setText(selectDate.toString());
+            btnSelectDate.setText(formatDate(selectDate));
             btnSelectDate.setTextColor(btnDateTextColor);
             calendarContainer.setVisibility(View.GONE);
         });
         calendarContainer.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus){
+            if (!hasFocus) {
                 calendarContainer.setVisibility(View.GONE);
             }
         });
         systemRemindSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             isSetSystemRemind = !isSetSystemRemind;
         });
+    }
+
+    private String formatDate(LocalDate localDate) {
+        int year = localDate.getYear();
+        int monthValue = localDate.getMonthValue();
+        int dayOfMonth = localDate.getDayOfMonth();
+        return year + yearString + monthValue +
+                monthString + dayOfMonth + dayString;
     }
 
     @OnClick({R.id.btn_select_date, R.id.btn_save_remind, R.id.btn_back})
