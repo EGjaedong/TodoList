@@ -20,7 +20,6 @@ import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
 import java.time.LocalDate;
 
 import butterknife.BindColor;
-import butterknife.BindInt;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +27,6 @@ import butterknife.OnClick;
 
 public class ReminderItemActivity extends AppCompatActivity {
     private static final int MONTH_ADD_NUMBER = 1;
-    private ReminderItemViewModel remindViewModel;
 
     @BindView(R.id.btn_select_date)
     Button btnSelectDate;
@@ -57,6 +55,7 @@ public class ReminderItemActivity extends AppCompatActivity {
     @BindColor(R.color.btn_date_text_color)
     int btnDateTextColor;
 
+    private ReminderItemViewModel remindViewModel;
     private boolean showCalender = false;
     private LocalDate selectDate = null;
     private String title;
@@ -75,6 +74,11 @@ public class ReminderItemActivity extends AppCompatActivity {
             selectDate = LocalDate.of(year, month + MONTH_ADD_NUMBER, dayOfMonth);
             btnSelectDate.setText(selectDate.toString());
             btnSelectDate.setTextColor(btnDateTextColor);
+        });
+        calendarContainer.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus){
+                calendarContainer.setVisibility(View.GONE);
+            }
         });
         systemRemindSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             isSetSystemRemind = !isSetSystemRemind;

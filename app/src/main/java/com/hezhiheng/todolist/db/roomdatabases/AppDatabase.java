@@ -13,7 +13,7 @@ import com.hezhiheng.todolist.db.dao.UserDao;
 import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.db.entity.User;
 
-@Database(entities = {User.class, Reminder.class}, version = 1)
+@Database(entities = {User.class, Reminder.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;

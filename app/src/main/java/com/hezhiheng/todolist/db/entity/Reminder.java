@@ -82,4 +82,13 @@ public class Reminder {
     public void setSystemRemind(boolean systemRemind) {
         isSystemRemind = systemRemind;
     }
+
+    @Override
+    public String toString() {
+        return "Reminder{" +
+                "title='" + title + '\'' +
+                ", desc='" + desc + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
