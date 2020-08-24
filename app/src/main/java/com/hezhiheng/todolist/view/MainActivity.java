@@ -1,11 +1,13 @@
 package com.hezhiheng.todolist.view;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,6 +26,7 @@ import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,6 +43,25 @@ public class MainActivity extends AppCompatActivity {
 
     private ReminderItemViewModel remindViewModel;
     private RemindItemAdapter remindItemAdapter;
+
+    @BindDimen(R.dimen.recycler_view_item_space)
+    int itemSpace;
+
+    static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
+                                   @NonNull RecyclerView parent,
+                                   @NonNull RecyclerView.State state) {
+            outRect.top = space;
+            outRect.bottom = space;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             remindItemAdapter = new RemindItemAdapter(this, reminderList);
             remindListContainer.setAdapter(remindItemAdapter);
             remindListContainer.setLayoutManager(new LinearLayoutManager(this));
+            remindListContainer.addItemDecoration(new SpacesItemDecoration(itemSpace));
         }
     }
 

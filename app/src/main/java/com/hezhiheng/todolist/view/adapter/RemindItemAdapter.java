@@ -22,7 +22,7 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
     public List<Reminder> remindList;
     public Context mContext;
 
-    public static class RemindViewHolder extends RecyclerView.ViewHolder {
+    static class RemindViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView dateTextView;
 
