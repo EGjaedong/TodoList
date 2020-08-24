@@ -49,4 +49,5 @@
     <dimen name="finish_check_box_in_main_margin_start">24dp</dimen>
     <dimen name="remind_title_in_main_margin_start">24dp</dimen>
     <dimen name="remind_date_text_in_main_margin_end">24dp</dimen>
+    <dimen name="remind_item_card_height">64dp</dimen>
 </resources>
