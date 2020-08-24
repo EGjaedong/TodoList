@@ -43,4 +43,6 @@
     <dimen name="text_date">16dp</dimen>
     <dimen name="text_date_size">24sp</dimen>
     <dimen name="text_month_size">12sp</dimen>
+    <dimen name="text_month_top">4dp</dimen>
+    <dimen name="btn_more_size">24dp</dimen>
 </resources>

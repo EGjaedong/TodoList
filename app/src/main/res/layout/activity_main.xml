@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".view.MainActivity">
 
+    <ImageButton
+        android:id="@+id/btn_more"
+        android:layout_width="@dimen/back_button_size"
+        android:layout_height="@dimen/back_button_size"
+        android:background="@color/btn_more_background_color"
+        android:contentDescription="@string/btn_more"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_more"
+        app:layout_constraintBottom_toBottomOf="@id/bar_top_guide_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bar_top_guide_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.06" />
+
     <TextView
         android:id="@+id/text_date"
         android:layout_width="wrap_content"
@@ -13,23 +33,24 @@
         android:layout_marginStart="@dimen/text_date"
         android:textColor="@color/text_date_color"
         android:textSize="@dimen/text_date_size"
-        app:layout_constraintBottom_toBottomOf="@+id/bottom_bar_guide_line"
+        app:layout_constraintBottom_toBottomOf="@+id/bar_bottom_guide_line"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintTop_toTopOf="@id/bar_top_guide_line"
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/text_month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_month_top"
         android:textColor="@color/text_month_color"
         android:textSize="@dimen/text_month_size"
-        app:layout_constraintBottom_toBottomOf="@+id/bottom_bar_guide_line"
+        app:layout_constraintBottom_toBottomOf="@+id/bar_bottom_guide_line"
         app:layout_constraintStart_toStartOf="@id/text_date"
         app:layout_constraintTop_toBottomOf="@id/text_date" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottom_bar_guide_line"
+        android:id="@+id/bar_bottom_guide_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -42,7 +63,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/bottom_bar_guide_line" />
+        app:layout_constraintTop_toTopOf="@id/bar_bottom_guide_line" />
 
     <ImageButton
         android:id="@+id/btn_add"
