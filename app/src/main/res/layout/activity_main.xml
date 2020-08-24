@@ -7,13 +7,42 @@
     tools:context=".view.MainActivity">
 
     <TextView
-        android:id="@+id/show_remind"
+        android:id="@+id/text_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_date"
+        android:textColor="@color/text_date_color"
+        android:textSize="@dimen/text_date_size"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_bar_guide_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <TextView
+        android:id="@+id/text_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_month_color"
+        android:textSize="@dimen/text_month_size"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_bar_guide_line"
+        app:layout_constraintStart_toStartOf="@id/text_date"
+        app:layout_constraintTop_toBottomOf="@id/text_date" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_bar_guide_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/remind_list_container"
+        android:layout_width="@dimen/remind_list_recycler_view_size"
+        android:layout_height="@dimen/remind_list_recycler_view_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/bottom_bar_guide_line" />
 
     <ImageButton
         android:id="@+id/btn_add"

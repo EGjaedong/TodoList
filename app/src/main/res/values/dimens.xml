@@ -39,4 +39,8 @@
     <dimen name="date_select_width">240dp</dimen>
     <dimen name="btn_add_size">64dp</dimen>
     <dimen name="btn_add_margin">8dp</dimen>
+    <dimen name="remind_list_recycler_view_size">0dp</dimen>
+    <dimen name="text_date">16dp</dimen>
+    <dimen name="text_date_size">24sp</dimen>
+    <dimen name="text_month_size">12sp</dimen>
 </resources>

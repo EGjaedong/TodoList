@@ -25,4 +25,6 @@
     <color name="date_select_background_color">#FFFFFF</color>
     <color name="date_text_color">#414C66</color>
     <color name="btn_date_text_color">#6BA5E9</color>
+    <color name="text_date_color">#6BA5E9</color>
+    <color name="text_month_color">#6BA5E9</color>
 </resources>
