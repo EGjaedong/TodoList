@@ -19,4 +19,6 @@
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="day">日</string>
+    <string name="btn_more">更多</string>
+    <string name="remind_count">%d个任务</string>
 </resources>

@@ -22,4 +22,5 @@
     <string name="month">month</string>
     <string name="day">day</string>
     <string name="btn_more">more</string>
+    <string name="remind_count">%dreminds</string>
 </resources>

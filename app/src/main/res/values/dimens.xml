@@ -51,4 +51,6 @@
     <dimen name="remind_date_text_in_main_margin_end">24dp</dimen>
     <dimen name="remind_item_card_height">64dp</dimen>
     <dimen name="recycler_view_item_space">1dp</dimen>
+    <dimen name="text_month_end">12dp</dimen>
+    <dimen name="text_count_size">12sp</dimen>
 </resources>

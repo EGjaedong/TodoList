@@ -49,6 +49,17 @@
         app:layout_constraintStart_toStartOf="@id/text_date"
         app:layout_constraintTop_toBottomOf="@id/text_date" />
 
+    <TextView
+        android:id="@+id/text_remind_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/text_month_end"
+        android:textColor="@color/text_count_color"
+        android:textSize="@dimen/text_count_size"
+        app:layout_constraintBottom_toBottomOf="@+id/bar_bottom_guide_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_month" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bar_bottom_guide_line"
         android:layout_width="wrap_content"

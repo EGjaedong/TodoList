@@ -29,4 +29,5 @@
     <color name="text_month_color">#777777</color>
     <color name="btn_more_background_color">#FFFCFC</color>
     <color name="item_border_color">#EFEFEF</color>
+    <color name="text_count_color">#777777</color>
 </resources>

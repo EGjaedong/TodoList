@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindDimen;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textMonth;
     @BindView(R.id.remind_list_container)
     RecyclerView remindListContainer;
+    @BindView(R.id.text_remind_count)
+    TextView textRemindCount;
 
     private ReminderItemViewModel remindViewModel;
 
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             remindListContainer.setAdapter(remindItemAdapter);
             remindListContainer.setLayoutManager(new LinearLayoutManager(this));
             remindListContainer.addItemDecoration(new SpacesItemDecoration(itemSpace));
+            textRemindCount.setText(getString(R.string.remind_count, reminderList.size()));
         }
     }
 
