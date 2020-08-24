@@ -28,6 +28,7 @@ public class ReminderItemViewModel extends ViewModel {
             mReminders = new MutableLiveData<>();
             loadReminders();
         }
+        List<Reminder> value = mReminders.getValue();
         return mReminders;
     }
 

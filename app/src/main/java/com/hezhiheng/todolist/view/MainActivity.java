@@ -9,9 +9,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.db.entity.Reminder;
+import com.hezhiheng.todolist.view.adapter.RemindItemAdapter;
 import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
 
 import java.time.DayOfWeek;
@@ -32,28 +35,42 @@ public class MainActivity extends AppCompatActivity {
     TextView textDate;
     @BindView(R.id.text_month)
     TextView textMonth;
+    @BindView(R.id.remind_list_container)
+    RecyclerView remindListContainer;
 
     private ReminderItemViewModel remindViewModel;
+    private RemindItemAdapter remindItemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        showDate();
 
         ReminderItemViewModel.Factory factory = new ReminderItemViewModel.Factory();
         remindViewModel = new ViewModelProvider(this, factory).get(ReminderItemViewModel.class);
+
+        showDate();
+        List<Reminder> reminderList = remindViewModel.getReminders().getValue();
+        showRemindList(reminderList);
+        setObserver();
+    }
+
+    private void setObserver() {
         final Observer<List<Reminder>> remindersObserver = reminders -> {
             if (reminders.size() != 0) {
-                StringBuilder sb = new StringBuilder();
-                reminders.forEach(reminder -> {
-                    sb.append(reminder.toString()).append("\n");
-                });
-                // TODO: 2020/8/24 add remindList show
+                showRemindList(reminders);
             }
         };
         remindViewModel.getReminders().observe(this, remindersObserver);
+    }
+
+    private void showRemindList(List<Reminder> reminderList) {
+        if (reminderList != null && reminderList.size() != 0) {
+            remindItemAdapter = new RemindItemAdapter(this, reminderList);
+            remindListContainer.setAdapter(remindItemAdapter);
+            remindListContainer.setLayoutManager(new LinearLayoutManager(this));
+        }
     }
 
     private void showDate() {
