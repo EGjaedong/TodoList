@@ -74,6 +74,7 @@ public class ReminderItemActivity extends AppCompatActivity {
             selectDate = LocalDate.of(year, month + MONTH_ADD_NUMBER, dayOfMonth);
             btnSelectDate.setText(selectDate.toString());
             btnSelectDate.setTextColor(btnDateTextColor);
+            calendarContainer.setVisibility(View.GONE);
         });
         calendarContainer.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus){

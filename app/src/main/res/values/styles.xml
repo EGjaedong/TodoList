@@ -17,4 +17,11 @@
     <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
         <item name="android:textColor">@color/date_text_color</item>
     </style>
+
+    <style name="SwitchCompatStyle">
+        <item name="colorControlActivated">@color/switch_on_color</item>
+<!--        <item name="colorSwitchThumbNormal">@color/switch_off_color</item>-->
+<!--        <item name="android:colorForeground">@color/switch_on_color</item>-->
+<!--        <item name="android:colorBackground">@color/switch_on_color</item>-->
+    </style>
 </resources>

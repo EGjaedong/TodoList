@@ -60,12 +60,12 @@
             android:id="@+id/remind_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:theme="@style/SwitchCompatStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.8"
-            app:track="@drawable/switch_track"
-            app:trackTint="@color/switch_track_color" />
+            app:track="@drawable/switch_track" />
 
         <TextView
             android:id="@+id/remind_text"
@@ -148,8 +148,8 @@
             android:id="@+id/calendar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:dateTextAppearance="@style/CalenderViewDateCustomText"
             android:background="@drawable/date_select_background"
+            android:dateTextAppearance="@style/CalenderViewDateCustomText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
