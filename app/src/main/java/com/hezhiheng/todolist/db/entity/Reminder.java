@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -83,6 +85,7 @@ public class Reminder {
         isSystemRemind = systemRemind;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "Reminder{" +

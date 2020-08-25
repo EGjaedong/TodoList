@@ -27,6 +27,7 @@ import java.time.format.TextStyle;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -44,11 +45,27 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     RecyclerView remindListContainer;
     @BindView(R.id.text_remind_count)
     TextView textRemindCount;
+    @BindDimen(R.dimen.recycler_view_item_space)
+    int itemSpace;
 
     private ReminderItemViewModel remindViewModel;
 
-    @BindDimen(R.dimen.recycler_view_item_space)
-    int itemSpace;
+    private Comparator<Reminder> reminderComparator = (o1, o2) -> {
+        if (o1.isFinished() && !o2.isFinished()) {
+            return 1;
+        } else if (!o1.isFinished() && o2.isFinished()) {
+            return -1;
+        } else {
+            if (o1.getDate().before(o2.getDate())) {
+                return -1;
+            } else if (o1.getDate().after(o2.getDate())) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    };
+
 
     static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -64,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
                                    @NonNull RecyclerView.State state) {
             outRect.bottom = space;
         }
-
     }
 
     @Override
@@ -93,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
 
     private void showRemindList(List<Reminder> reminderList) {
         if (reminderList != null && reminderList.size() != 0) {
-            reminderList.sort(Comparator.comparing(Reminder::getDate));
+            reminderList.sort(reminderComparator);
             RemindItemAdapter remindItemAdapter = new RemindItemAdapter(this, reminderList, this);
             remindListContainer.setAdapter(remindItemAdapter);
             remindListContainer.setLayoutManager(new LinearLayoutManager(this));
