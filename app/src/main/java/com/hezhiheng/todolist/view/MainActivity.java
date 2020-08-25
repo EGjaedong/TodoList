@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindDimen;
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
                                    @NonNull RecyclerView parent,
                                    @NonNull RecyclerView.State state) {
-            outRect.top = space;
             outRect.bottom = space;
         }
     }

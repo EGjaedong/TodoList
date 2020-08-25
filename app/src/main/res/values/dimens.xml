@@ -49,8 +49,12 @@
     <dimen name="finish_check_box_in_main_margin_start">24dp</dimen>
     <dimen name="remind_title_in_main_margin_start">24dp</dimen>
     <dimen name="remind_date_text_in_main_margin_end">24dp</dimen>
-    <dimen name="remind_item_card_height">64dp</dimen>
+    <dimen name="remind_item_card_height">80dp</dimen>
     <dimen name="recycler_view_item_space">1dp</dimen>
     <dimen name="text_month_end">12dp</dimen>
     <dimen name="text_count_size">12sp</dimen>
+    <dimen name="remind_title_text_size">16sp</dimen>
+    <dimen name="remind_date_text_size">12sp</dimen>
+    <dimen name="btn_add_radius">25dp</dimen>
+    <dimen name="btn_more_margin_end">8dp</dimen>
 </resources>
