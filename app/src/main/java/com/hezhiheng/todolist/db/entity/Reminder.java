@@ -37,6 +37,16 @@ public class Reminder {
         this.isSystemRemind = isSystemRemind;
     }
 
+    @Ignore
+    public Reminder(int id, String title, String desc, Date date, boolean isFinished, boolean isSystemRemind) {
+        this.id = id;
+        this.title = title;
+        this.desc = desc;
+        this.date = date;
+        this.isFinished = isFinished;
+        this.isSystemRemind = isSystemRemind;
+    }
+
     public int getId() {
         return id;
     }

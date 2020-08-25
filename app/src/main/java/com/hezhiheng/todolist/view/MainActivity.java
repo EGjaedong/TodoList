@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +20,8 @@ import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.view.adapter.RemindItemAdapter;
 import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
 
+import org.w3c.dom.Text;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
@@ -27,7 +29,6 @@ import java.time.format.TextStyle;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     int itemSpace;
 
     private ReminderItemViewModel remindViewModel;
+    private boolean isFirstShow = true;
 
     private Comparator<Reminder> reminderComparator = (o1, o2) -> {
         if (o1.isFinished() && !o2.isFinished()) {
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         }
     };
 
+    private
 
     static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -110,12 +113,27 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     private void showRemindList(List<Reminder> reminderList) {
         if (reminderList != null && reminderList.size() != 0) {
             reminderList.sort(reminderComparator);
-            RemindItemAdapter remindItemAdapter = new RemindItemAdapter(this, reminderList, this);
+            RemindItemAdapter remindItemAdapter = new RemindItemAdapter(this,
+                    reminderList, this);
+            setItemClickListener(remindItemAdapter);
             remindListContainer.setAdapter(remindItemAdapter);
             remindListContainer.setLayoutManager(new LinearLayoutManager(this));
-            remindListContainer.addItemDecoration(new SpacesItemDecoration(itemSpace));
+            if (isFirstShow) {
+                remindListContainer.addItemDecoration(new SpacesItemDecoration(itemSpace));
+                isFirstShow = false;
+            }
             textRemindCount.setText(getString(R.string.remind_count, reminderList.size()));
         }
+    }
+
+    private void setItemClickListener(RemindItemAdapter remindItemAdapter) {
+        remindItemAdapter.setOnItemClickListener((view, position) -> {
+            TextView idTextView = (TextView) view;
+            String idString = idTextView.getText().toString();
+            Intent intent = new Intent(MainActivity.this, ReminderItemActivity.class);
+            intent.putExtra("id", Integer.parseInt(idString));
+            startActivity(intent);
+        });
     }
 
     private void showDate() {

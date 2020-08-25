@@ -1,5 +1,6 @@
 package com.hezhiheng.todolist.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +16,14 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hezhiheng.todolist.R;
+import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 import butterknife.BindColor;
 import butterknife.BindString;
@@ -27,6 +33,7 @@ import butterknife.OnClick;
 
 public class ReminderItemActivity extends AppCompatActivity {
     private static final int MONTH_ADD_NUMBER = 1;
+    private static final int DEFAULT_REMIND_ID = 0;
 
     @BindView(R.id.btn_select_date)
     Button btnSelectDate;
@@ -45,7 +52,7 @@ public class ReminderItemActivity extends AppCompatActivity {
     @BindView(R.id.finish_check_box)
     CheckBox finishRemindCheck;
     @BindView(R.id.remind_switch)
-    SwitchCompat systemRemindSwitch;
+    SwitchCompat remindSwitch;
     @BindString(R.string.year)
     String yearString;
     @BindString(R.string.month)
@@ -62,6 +69,8 @@ public class ReminderItemActivity extends AppCompatActivity {
     private String desc;
     private boolean isRemindFinish;
     private boolean isSetSystemRemind = false;
+    private boolean remindIsExist = false;
+    private int remindIdIfIsExist = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,10 +79,11 @@ public class ReminderItemActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         ReminderItemViewModel.Factory factory = new ReminderItemViewModel.Factory();
         remindViewModel = new ViewModelProvider(this, factory).get(ReminderItemViewModel.class);
+
+        showRemindIfExisted(savedInstanceState);
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             selectDate = LocalDate.of(year, month + MONTH_ADD_NUMBER, dayOfMonth);
-            btnSelectDate.setText(formatDate(selectDate));
-            btnSelectDate.setTextColor(btnDateTextColor);
+            showDateAtButton(selectDate);
             calendarContainer.setVisibility(View.GONE);
         });
         calendarContainer.setOnFocusChangeListener((v, hasFocus) -> {
@@ -81,9 +91,45 @@ public class ReminderItemActivity extends AppCompatActivity {
                 calendarContainer.setVisibility(View.GONE);
             }
         });
-        systemRemindSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        remindSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             isSetSystemRemind = !isSetSystemRemind;
         });
+    }
+
+    private void showDateAtButton(LocalDate selectDate) {
+        btnSelectDate.setText(formatDate(selectDate));
+        btnSelectDate.setTextColor(btnDateTextColor);
+    }
+
+    private void showRemindIfExisted(Bundle bundle) {
+        Intent intent = getIntent();
+        if (intent != null) {
+            remindIdIfIsExist = intent.getIntExtra("id", DEFAULT_REMIND_ID);
+            if (remindIdIfIsExist > 0) {
+                Reminder remind = remindViewModel.getOneById(remindIdIfIsExist);
+                if (remind != null) {
+                    showRemindItem(remind);
+                }
+            }
+        }
+    }
+
+    private void showRemindItem(Reminder reminder) {
+        LocalDate localDate = convertDateToLocalDate(reminder.getDate());
+        showDateAtButton(localDate);
+        this.selectDate = localDate;
+        finishRemindCheck.setChecked(reminder.isFinished());
+        remindSwitch.setChecked(reminder.isSystemRemind());
+        editRemindTitle.setText(reminder.getTitle());
+        editRemindDesc.setText(reminder.getDesc());
+        this.remindIsExist = true;
+    }
+
+    private LocalDate convertDateToLocalDate(Date date) {
+        Instant instant = date.toInstant();
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zoneId);
+        return localDateTime.toLocalDate();
     }
 
     private String formatDate(LocalDate localDate) {
@@ -110,8 +156,15 @@ public class ReminderItemActivity extends AppCompatActivity {
             case R.id.btn_save_remind:
                 getRemindData();
                 if (title != null && !title.equals("") && selectDate != null) {
-                    if (remindViewModel.saveRemind(title, desc, selectDate, isRemindFinish, isSetSystemRemind)) {
-                        this.finish();
+                    if (!remindIsExist){
+                        if (remindViewModel.saveRemind(title, desc, selectDate, isRemindFinish, isSetSystemRemind)) {
+                            this.finish();
+                        }
+                    }else {
+                        int updateRemindId = remindViewModel.updateRemind(remindIdIfIsExist, title, desc, selectDate, isRemindFinish, isSetSystemRemind);
+                        if (updateRemindId != 0){
+                            this.finish();
+                        }
                     }
                 }
                 break;
@@ -129,8 +182,8 @@ public class ReminderItemActivity extends AppCompatActivity {
     }
 
     void getRemindData() {
-        title = editRemindTitle.getText().toString();
-        desc = editRemindDesc.getText().toString();
-        isRemindFinish = finishRemindCheck.isChecked();
+        this.title = editRemindTitle.getText().toString();
+        this.desc = editRemindDesc.getText().toString();
+        this.isRemindFinish = finishRemindCheck.isChecked();
     }
 }

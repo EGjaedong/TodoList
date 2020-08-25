@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.repository.ReminderRepository;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class ReminderItemViewModel extends ViewModel {
     private static final int REMIND_UPDATE_ERROR = 0;
+    private static final int NOT_EXIST_REMIND_ID = 0;
 
     private ReminderRepository reminderRepository;
     private LiveData<List<Reminder>> mReminders;
@@ -42,13 +44,20 @@ public class ReminderItemViewModel extends ViewModel {
         }
     }
 
+    public Reminder getOneById(int id) {
+        Reminder reminder = null;
+        try {
+            reminder = reminderRepository.getOneById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return reminder;
+    }
+
     public boolean saveRemind(String title, String desc, LocalDate selectDate,
                               boolean isRemindFinish, boolean isSetSystemRemind) {
-        ZonedDateTime zonedDateTime = selectDate.atStartOfDay(ZoneId.systemDefault());
-        Date date = Date.from(zonedDateTime.toInstant());
-        Reminder reminder = new Reminder(title, desc, date, isRemindFinish, isSetSystemRemind);
         try {
-            reminderRepository.save(reminder);
+            reminderRepository.save(createRemind(NOT_EXIST_REMIND_ID, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,6 +79,21 @@ public class ReminderItemViewModel extends ViewModel {
             }
         }
         return remindId;
+    }
+
+    public int updateRemind(int id, String title, String desc, LocalDate selectDate,
+                            boolean isRemindFinish, boolean isSetSystemRemind) {
+        return this.updateRemind(createRemind(id, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
+    }
+
+    private Reminder createRemind(int id, String title, String desc, LocalDate selectDate,
+                                  boolean isRemindFinish, boolean isSetSystemRemind) {
+        ZonedDateTime zonedDateTime = selectDate.atStartOfDay(ZoneId.systemDefault());
+        Date date = Date.from(zonedDateTime.toInstant());
+        if (id != 0) {
+            return new Reminder(id, title, desc, date, isRemindFinish, isSetSystemRemind);
+        }
+        return new Reminder(title, desc, date, isRemindFinish, isSetSystemRemind);
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

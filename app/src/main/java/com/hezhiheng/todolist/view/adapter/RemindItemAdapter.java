@@ -24,6 +24,7 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
     private List<Reminder> remindList;
     private Context mContext;
     private CheckItemListener mCheckItemListener;
+    private OnItemClickListener mOnItemClickListener;
 
     public RemindItemAdapter(Context mContext, List<Reminder> remindList, CheckItemListener checkItemListener) {
         this.mContext = mContext;
@@ -76,6 +77,11 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
                 }
                 notifyDataSetChanged();
             });
+
+            if (mOnItemClickListener != null) {
+                holder.itemView.setOnClickListener(v -> mOnItemClickListener.
+                        onItemClick(holder.idTextView, position));
+            }
         }
     }
 
@@ -91,7 +97,15 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
         return remindList.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mOnItemClickListener = listener;
+    }
+
     public interface CheckItemListener {
         void itemChecked(Reminder reminder, boolean isChecked);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 }
