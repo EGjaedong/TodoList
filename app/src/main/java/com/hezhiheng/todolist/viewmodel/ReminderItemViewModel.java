@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 public class ReminderItemViewModel extends ViewModel {
+    private static final int REMIND_UPDATE_ERROR = 0;
+
     private ReminderRepository reminderRepository;
     private LiveData<List<Reminder>> mReminders;
 
@@ -24,7 +26,7 @@ public class ReminderItemViewModel extends ViewModel {
     }
 
     public LiveData<List<Reminder>> getReminders() {
-        if (mReminders == null){
+        if (mReminders == null) {
             mReminders = new MutableLiveData<>();
             loadReminders();
         }
@@ -52,6 +54,22 @@ public class ReminderItemViewModel extends ViewModel {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public int updateRemind(Reminder reminder) {
+        int remindId = REMIND_UPDATE_ERROR;
+        if (reminder != null) {
+            try {
+                Reminder originalRemind = reminderRepository.getOneById(reminder.getId());
+                if (originalRemind != null) {
+                    remindId = reminderRepository.updateRemind(reminder);
+                }
+                loadReminders();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return remindId;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

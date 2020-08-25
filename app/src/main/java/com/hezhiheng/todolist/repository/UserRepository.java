@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hezhiheng.todolist.async.GetResponseTask;
-import com.hezhiheng.todolist.async.GetUserFromDB;
-import com.hezhiheng.todolist.async.SaveUserTask;
+import com.hezhiheng.todolist.async.GetUserFromDBTask;
+import com.hezhiheng.todolist.async.SaveUserToDBTask;
 import com.hezhiheng.todolist.db.entity.User;
 
 import java.util.concurrent.ExecutionException;
@@ -37,7 +37,7 @@ public class UserRepository {
             if (PASSWORD_CIPHER_TEXT.equals(user.getPassword())){
                 user.setPassword(ORIGINAL_PASSWORD);
             }
-            new SaveUserTask().execute(user);
+            new SaveUserToDBTask().execute(user);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class UserRepository {
     private User findUserFromDB() {
         User user = null;
         try {
-            user = new GetUserFromDB().execute().get();
+            user = new GetUserFromDBTask().execute().get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

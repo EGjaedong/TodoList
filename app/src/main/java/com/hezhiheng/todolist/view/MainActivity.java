@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RemindItemAdapter.CheckItemListener {
     @BindView(R.id.btn_add)
     ImageButton btnAddRemind;
     @BindView(R.id.text_date)
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     int itemSpace;
 
     static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+
         private int space;
 
         public SpacesItemDecoration(int space) {
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                                    @NonNull RecyclerView.State state) {
             outRect.bottom = space;
         }
+
     }
 
     @Override
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private void showRemindList(List<Reminder> reminderList) {
         if (reminderList != null && reminderList.size() != 0) {
             reminderList.sort(Comparator.comparing(Reminder::getDate));
-            RemindItemAdapter remindItemAdapter = new RemindItemAdapter(this, reminderList);
+            RemindItemAdapter remindItemAdapter = new RemindItemAdapter(this, reminderList, this);
             remindListContainer.setAdapter(remindItemAdapter);
             remindListContainer.setLayoutManager(new LinearLayoutManager(this));
             remindListContainer.addItemDecoration(new SpacesItemDecoration(itemSpace));
@@ -108,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
                 + dayOfMonth + "th";
         textDate.setText(dayText);
         textMonth.setText(month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH));
+    }
+
+    @Override
+    public void itemChecked(Reminder reminder, boolean isChecked) {
+        remindViewModel.updateRemind(reminder);
     }
 
     @OnClick(R.id.btn_add)

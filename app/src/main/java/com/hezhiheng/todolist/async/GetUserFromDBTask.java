@@ -7,9 +7,7 @@ import com.hezhiheng.todolist.db.dao.UserDao;
 import com.hezhiheng.todolist.db.entity.User;
 import com.hezhiheng.todolist.db.roomdatabases.AppDatabase;
 
-public class GetUserFromDB extends AsyncTask<Void, Void, User> {
-    private ToDoListApplication toDoListApplication = ToDoListApplication.getInstance();
-    private UserDao userDao = AppDatabase.getInstance(toDoListApplication.getApplicationContext()).getUserDao();
+public class GetUserFromDBTask extends AsyncTask<Void, Void, User> implements DatabaseTaskBase {
     @Override
     protected User doInBackground(Void... voids) {
         return userDao.getUserByName();
