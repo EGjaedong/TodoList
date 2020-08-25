@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,8 +18,6 @@ import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.view.adapter.RemindItemAdapter;
 import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
-
-import org.w3c.dom.Text;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

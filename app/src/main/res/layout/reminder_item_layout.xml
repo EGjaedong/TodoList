@@ -134,6 +134,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ImageButton
+        android:id="@+id/btn_cancel"
+        android:layout_width="@dimen/btn_save_remind_size"
+        android:layout_height="@dimen/btn_save_remind_size"
+        android:layout_marginEnd="@dimen/btn_save_remind_margin"
+        android:layout_marginBottom="@dimen/btn_save_remind_margin"
+        android:visibility="gone"
+        android:background="@color/btn_save_background_color"
+        android:contentDescription="@string/btn_save_remind_desc"
+        android:src="@mipmap/radio_delete_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_save_remind" />
+
+
     <FrameLayout
         android:id="@+id/calendar_container"
         android:layout_width="wrap_content"

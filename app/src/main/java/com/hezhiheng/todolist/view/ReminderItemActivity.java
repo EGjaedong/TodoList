@@ -61,6 +61,8 @@ public class ReminderItemActivity extends AppCompatActivity {
     String dayString;
     @BindColor(R.color.btn_date_text_color)
     int btnDateTextColor;
+    @BindView(R.id.btn_cancel)
+    ImageButton btnCancel;
 
     private ReminderItemViewModel remindViewModel;
     private boolean showCalender = false;
@@ -104,6 +106,7 @@ public class ReminderItemActivity extends AppCompatActivity {
     private void showRemindIfExisted(Bundle bundle) {
         Intent intent = getIntent();
         if (intent != null) {
+            btnCancel.setVisibility(View.VISIBLE);
             remindIdIfIsExist = intent.getIntExtra("id", DEFAULT_REMIND_ID);
             if (remindIdIfIsExist > 0) {
                 Reminder remind = remindViewModel.getOneById(remindIdIfIsExist);
@@ -140,10 +143,11 @@ public class ReminderItemActivity extends AppCompatActivity {
                 monthString + dayOfMonth + dayString;
     }
 
-    @OnClick({R.id.btn_select_date, R.id.btn_save_remind, R.id.btn_back})
+    @OnClick({R.id.btn_select_date, R.id.btn_save_remind, R.id.btn_back, R.id.btn_cancel})
     void btnClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
+            case R.id.btn_cancel:
                 this.finish();
                 break;
             case R.id.btn_select_date:
