@@ -1,6 +1,7 @@
 package com.hezhiheng.todolist.view.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,10 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
         if (reminder != null) {
             holder.idTextView.setText(String.valueOf(reminder.getId()));
             holder.titleTextView.setText(reminder.getTitle());
+            if (reminder.isFinished()) {
+                holder.titleTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                holder.titleTextView.setTextColor(mContext.getResources().getColor(R.color.finished_remind_title_text_color, null));
+            }
             holder.dateTextView.setText(formatDate(reminder.getDate()));
             holder.itemCheckBox.setChecked(reminder.isFinished());
             holder.itemCheckBox.setOnClickListener(v -> {
