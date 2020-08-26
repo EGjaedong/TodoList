@@ -1,6 +1,5 @@
 package com.hezhiheng.todolist.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -80,8 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean judgeUserIsAlreadyLogin() {
-        int anInt = sharedPreferences.getInt(userAlreadyLoginKey, DEFAULT_LOGIN_FLAG);
-        return anInt == USER_ALREADY_LOGIN_FLAG;
+        return sharedPreferences.getInt(userAlreadyLoginKey, DEFAULT_LOGIN_FLAG) == USER_ALREADY_LOGIN_FLAG;
     }
 
     @OnClick({R.id.login_btn, R.id.btn_error_username, R.id.btn_error_password})

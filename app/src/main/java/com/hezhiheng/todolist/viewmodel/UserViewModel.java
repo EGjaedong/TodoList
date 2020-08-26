@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.hezhiheng.todolist.db.entity.User;
 import com.hezhiheng.todolist.enums.UserFindResultEnum;
 import com.hezhiheng.todolist.repository.UserRepository;
+import com.hezhiheng.todolist.utils.MD5Util;
 
 public class UserViewModel extends ViewModel {
     private LiveData<User> mUserLiveData;
@@ -28,7 +29,7 @@ public class UserViewModel extends ViewModel {
             if (!user.getName().equals(username)){
                 return UserFindResultEnum.USER_NOT_FOUND;
             }
-            if (user.getName().equals(username) && user.getPassword().equals(password)){
+            if (user.getName().equals(username) && user.getPassword().equals(MD5Util.md5(password))){
                 return UserFindResultEnum.OK;
             }else {
                 return UserFindResultEnum.PASSWORD_ERROR;

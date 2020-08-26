@@ -1,11 +1,9 @@
 package com.hezhiheng.todolist.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -187,7 +185,6 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
-        int anInt = sharedPreferences.getInt(userAlreadyLoginKey, 0);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         this.finish();
