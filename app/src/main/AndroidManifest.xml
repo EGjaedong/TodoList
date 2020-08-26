@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hezhiheng.todolist">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".ToDoListApplication"
         android:allowBackup="true"
@@ -20,6 +23,22 @@
         </activity>
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.ReminderItemActivity" />
+
+
+        <receiver
+            android:name=".utils.NotifyBroadcast"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.hezhiheng.todolist.RECEIVER" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".utils.AlarmService"
+            android:enabled="true"
+            android:exported="true">
+
+        </service>
     </application>
 
 </manifest>

@@ -1,7 +1,15 @@
 package com.hezhiheng.todolist.view;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -13,16 +21,20 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.db.entity.Reminder;
+import com.hezhiheng.todolist.utils.AlarmService;
+import com.hezhiheng.todolist.utils.AlarmUtil;
 import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 import butterknife.BindColor;
@@ -63,6 +75,8 @@ public class ReminderItemActivity extends AppCompatActivity {
     int btnDateTextColor;
     @BindView(R.id.btn_cancel)
     ImageButton btnCancel;
+    @BindString(R.string.channel_id)
+    String channelId;
 
     private ReminderItemViewModel remindViewModel;
     private boolean showCalender = false;
@@ -94,7 +108,7 @@ public class ReminderItemActivity extends AppCompatActivity {
             }
         });
         remindSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isSetSystemRemind = !isSetSystemRemind;
+            isSetSystemRemind = isChecked;
         });
     }
 
@@ -160,13 +174,15 @@ public class ReminderItemActivity extends AppCompatActivity {
             case R.id.btn_save_remind:
                 getRemindData();
                 if (title != null && !title.equals("") && selectDate != null) {
-                    if (!remindIsExist){
+                    if (!remindIsExist) {
                         if (remindViewModel.saveRemind(title, desc, selectDate, isRemindFinish, isSetSystemRemind)) {
+                            setNotification(isSetSystemRemind);
                             this.finish();
                         }
-                    }else {
+                    } else {
                         int updateRemindId = remindViewModel.updateRemind(remindIdIfIsExist, title, desc, selectDate, isRemindFinish, isSetSystemRemind);
-                        if (updateRemindId != 0){
+                        setNotification(isSetSystemRemind);
+                        if (updateRemindId != 0) {
                             this.finish();
                         }
                     }
@@ -189,5 +205,24 @@ public class ReminderItemActivity extends AppCompatActivity {
         this.title = editRemindTitle.getText().toString();
         this.desc = editRemindDesc.getText().toString();
         this.isRemindFinish = finishRemindCheck.isChecked();
+    }
+
+    private void setNotification(boolean isSetRemind) {
+        if (!isSetRemind) {
+            return;
+        }
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime targetTime = LocalDateTime.of(now.getYear(), now.getMonth(),
+                now.getDayOfMonth(), now.getHour(), now.getMinute() + 1, now.getSecond());
+        if (now.isAfter(targetTime)) {
+            return;
+        }
+        Intent intent = new Intent(this, AlarmService.class);
+        intent.setPackage(getPackageName());
+        intent.setAction(getPackageName() + ".AlarmService");
+        intent.putExtra(AlarmService.TITLE_KEY, this.title);
+        intent.putExtra(AlarmService.DESC_KEY, this.desc);
+        intent.putExtra(AlarmService.TIME_KEY, targetTime.toString());
+        startService(intent);
     }
 }

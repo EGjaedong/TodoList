@@ -1,7 +1,12 @@
 package com.hezhiheng.todolist.view;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -9,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindDimen;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     TextView textRemindCount;
     @BindDimen(R.dimen.recycler_view_item_space)
     int itemSpace;
+    @BindString(R.string.channel_id)
+    String channelId;
 
     private ReminderItemViewModel remindViewModel;
     private boolean isFirstShow = true;
@@ -153,5 +162,17 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     void btnClick(View view) {
         Intent intent = new Intent(this, ReminderItemActivity.class);
         startActivity(intent);
+    }
+
+    private void setNotification() {
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = new NotificationCompat.Builder(this, channelId)
+                .setContentText("升级")
+                .setContentText("下班啦")
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.check_selected)
+                .setAutoCancel(true)
+                .build();
+        manager.notify(100, notification);
     }
 }

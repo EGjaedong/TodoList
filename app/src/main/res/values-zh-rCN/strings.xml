@@ -21,4 +21,7 @@
     <string name="day">日</string>
     <string name="btn_more">更多</string>
     <string name="remind_count">%d个任务</string>
+    <string name="channel_name">提醒</string>
+    <string name="channel_description">待办提醒</string>
+    <string name="channel_id">待办事项提醒</string>
 </resources>
