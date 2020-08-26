@@ -33,12 +33,6 @@
                 <action android:name="com.hezhiheng.todolist.RECEIVER" />
             </intent-filter>
         </receiver>
-        <service
-            android:name=".utils.AlarmService"
-            android:enabled="true"
-            android:exported="true">
-
-        </service>
     </application>
 
 </manifest>

@@ -1,8 +1,7 @@
 package com.hezhiheng.todolist.view;
 
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.ToDoListApplication;
 import com.hezhiheng.todolist.db.entity.Reminder;
-import com.hezhiheng.todolist.utils.AlarmService;
 import com.hezhiheng.todolist.utils.AlarmUtil;
 import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
 
@@ -87,7 +85,8 @@ public class ReminderItemActivity extends AppCompatActivity {
     private boolean isSetSystemRemind = false;
     private boolean remindIsExist = false;
     private int remindIdIfIsExist = 0;
-    private final String cls = packageName + ".utils.NotifyBroadcast";
+    private Context appContext = ToDoListApplication.getInstance().getApplicationContext();
+    private AlarmUtil alarmUtil = AlarmUtil.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -211,8 +210,7 @@ public class ReminderItemActivity extends AppCompatActivity {
         LocalDateTime targetTime = LocalDateTime.of(now.getYear(), now.getMonth(),
                 now.getDayOfMonth(), now.getHour(), now.getMinute() + 1, now.getSecond());
         if (now.isBefore(LocalDateTime.from(targetTime))) {
-            Intent intent = new Intent(this, AlarmService.class);
-            stopService(intent);
+            alarmUtil.cancelAlarm(remindIdIfIsExist);
         }
 
     }
@@ -245,12 +243,6 @@ public class ReminderItemActivity extends AppCompatActivity {
         if (now.isAfter(targetTime)) {
             return;
         }
-        Intent intent = new Intent(this, AlarmService.class);
-        intent.setPackage(packageName);
-        intent.setAction(serviceAction);
-        intent.putExtra(AlarmService.TITLE_KEY, this.title);
-        intent.putExtra(AlarmService.DESC_KEY, this.desc);
-        intent.putExtra(AlarmService.TIME_KEY, targetTime.toString());
-        startService(intent);
+        alarmUtil.setAlarm(title, desc, targetTime, remindIdIfIsExist);
     }
 }

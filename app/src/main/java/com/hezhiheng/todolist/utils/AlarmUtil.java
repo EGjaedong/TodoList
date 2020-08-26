@@ -11,27 +11,57 @@ import com.hezhiheng.todolist.ToDoListApplication;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AlarmUtil {
     public static final String INTENT_ALARM_ACTION = "com.hezhiheng.todolist.RECEIVER";
-    private static final int REQUEST_CODE = 0;
-    private static final int FLAGS = 0;
-    private final Context mContext = ToDoListApplication.getInstance().getApplicationContext();
-    private final String packageName = mContext.getPackageName();
-    private final String cls = packageName + ".utils.NotifyBroadcast";
+    public static final String TITLE_KEY = "title";
+    public static final String DESC_KEY = "desc";
 
-    public void setAlarm(final String title, final String desc, final LocalDateTime localDateTime) {
-        Intent intent = new Intent();
+    private static AlarmUtil instance;
+    private final Context mContext;
+    private final String packageName;
+    private final String cls;
+    private AlarmManager alarmManager;
+    private Map<Integer, PendingIntent> pendingIntentMap;
+
+    private AlarmUtil() {
+        mContext = ToDoListApplication.getInstance().getApplicationContext();
+        packageName = mContext.getPackageName();
+        cls = packageName + ".utils.NotifyBroadcast";
+        alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        pendingIntentMap = new HashMap<>();
+    }
+
+    public static AlarmUtil getInstance() {
+        synchronized (AlarmUtil.class) {
+            if (instance == null) {
+                instance = new AlarmUtil();
+            }
+        }
+        return instance;
+    }
+
+    public void setAlarm(final String title, final String desc,
+                         final LocalDateTime localDateTime, final int requestCode) {
+        Intent intent = new Intent(mContext, NotifyBroadcast.class);
         intent.setAction(INTENT_ALARM_ACTION);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.setComponent(new ComponentName(packageName, cls));
         }
-        intent.putExtra(AlarmService.TITLE_KEY, title);
-        intent.putExtra(AlarmService.DESC_KEY, desc);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, REQUEST_CODE, intent, FLAGS);
-        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        intent.putExtra(TITLE_KEY, title);
+        intent.putExtra(DESC_KEY, desc);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         if (alarmManager != null) {
+            pendingIntentMap.put(requestCode, pendingIntent);
             alarmManager.set(AlarmManager.RTC_WAKEUP, localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli(), pendingIntent);
         }
+    }
+
+    public void cancelAlarm(int cancelAlarmId) {
+        PendingIntent pendingIntent = pendingIntentMap.get(cancelAlarmId);
+        alarmManager.cancel(pendingIntent);
+        pendingIntentMap.remove(cancelAlarmId);
     }
 }
