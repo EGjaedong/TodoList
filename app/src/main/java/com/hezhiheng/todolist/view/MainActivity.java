@@ -163,16 +163,4 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         Intent intent = new Intent(this, ReminderItemActivity.class);
         startActivity(intent);
     }
-
-    private void setNotification() {
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Notification notification = new NotificationCompat.Builder(this, channelId)
-                .setContentText("升级")
-                .setContentText("下班啦")
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.check_selected)
-                .setAutoCancel(true)
-                .build();
-        manager.notify(100, notification);
-    }
 }
