@@ -52,10 +52,12 @@ public class AlarmUtil {
         }
         intent.putExtra(TITLE_KEY, title);
         intent.putExtra(DESC_KEY, desc);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, requestCode, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
         if (alarmManager != null) {
             pendingIntentMap.put(requestCode, pendingIntent);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli(), pendingIntent);
+            alarmManager.set(AlarmManager.RTC_WAKEUP,
+                    localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli(), pendingIntent);
         }
     }
 
