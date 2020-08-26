@@ -1,12 +1,7 @@
 package com.hezhiheng.todolist.view;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     int itemSpace;
     @BindString(R.string.channel_id)
     String channelId;
+    @BindString(R.string.remind_id_intent_key)
+    String remindIdIntentKey;
 
     private ReminderItemViewModel remindViewModel;
     private boolean isFirstShow = true;
@@ -137,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
             TextView idTextView = (TextView) view;
             String idString = idTextView.getText().toString();
             Intent intent = new Intent(MainActivity.this, ReminderItemActivity.class);
-            intent.putExtra("id", Integer.parseInt(idString));
+            intent.putExtra(remindIdIntentKey, Integer.parseInt(idString));
             startActivity(intent);
         });
     }

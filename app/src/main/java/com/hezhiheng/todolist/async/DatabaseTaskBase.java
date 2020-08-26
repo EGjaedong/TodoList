@@ -6,7 +6,7 @@ import com.hezhiheng.todolist.db.dao.UserDao;
 import com.hezhiheng.todolist.db.roomdatabases.AppDatabase;
 
 public interface DatabaseTaskBase {
-    static final int FIRST_INDEX = 0;
+    int FIRST_INDEX = 0;
 
     ToDoListApplication toDoListApplication = ToDoListApplication.getInstance();
     RemindDao remindDao = AppDatabase.

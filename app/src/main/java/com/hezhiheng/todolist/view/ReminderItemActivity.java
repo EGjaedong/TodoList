@@ -1,15 +1,9 @@
 package com.hezhiheng.todolist.view;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -21,10 +15,10 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hezhiheng.todolist.R;
+import com.hezhiheng.todolist.ToDoListApplication;
 import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.utils.AlarmService;
 import com.hezhiheng.todolist.utils.AlarmUtil;
@@ -34,7 +28,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 import butterknife.BindColor;
@@ -46,6 +39,11 @@ import butterknife.OnClick;
 public class ReminderItemActivity extends AppCompatActivity {
     private static final int MONTH_ADD_NUMBER = 1;
     private static final int DEFAULT_REMIND_ID = 0;
+    private static final int TARGET_HOUR = 6;
+    private static final int TARGET_MINUTE = 0;
+    private static final int TARGET_SECOND = 0;
+    private final String packageName = "com.hezhiheng.todolist";
+    private final String serviceAction = packageName + ".AlarmService";
 
     @BindView(R.id.btn_select_date)
     Button btnSelectDate;
@@ -73,10 +71,12 @@ public class ReminderItemActivity extends AppCompatActivity {
     String dayString;
     @BindColor(R.color.btn_date_text_color)
     int btnDateTextColor;
-    @BindView(R.id.btn_cancel)
-    ImageButton btnCancel;
+    @BindView(R.id.btn_remove)
+    ImageButton btnRemove;
     @BindString(R.string.channel_id)
     String channelId;
+    @BindString(R.string.remind_id_intent_key)
+    String remindIdIntentKey;
 
     private ReminderItemViewModel remindViewModel;
     private boolean showCalender = false;
@@ -87,6 +87,7 @@ public class ReminderItemActivity extends AppCompatActivity {
     private boolean isSetSystemRemind = false;
     private boolean remindIsExist = false;
     private int remindIdIfIsExist = 0;
+    private final String cls = packageName + ".utils.NotifyBroadcast";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class ReminderItemActivity extends AppCompatActivity {
         ReminderItemViewModel.Factory factory = new ReminderItemViewModel.Factory();
         remindViewModel = new ViewModelProvider(this, factory).get(ReminderItemViewModel.class);
 
-        showRemindIfExisted(savedInstanceState);
+        showRemindIfExisted();
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             selectDate = LocalDate.of(year, month + MONTH_ADD_NUMBER, dayOfMonth);
             showDateAtButton(selectDate);
@@ -117,15 +118,15 @@ public class ReminderItemActivity extends AppCompatActivity {
         btnSelectDate.setTextColor(btnDateTextColor);
     }
 
-    private void showRemindIfExisted(Bundle bundle) {
+    private void showRemindIfExisted() {
         Intent intent = getIntent();
         if (intent != null) {
-            btnCancel.setVisibility(View.VISIBLE);
-            remindIdIfIsExist = intent.getIntExtra("id", DEFAULT_REMIND_ID);
+            remindIdIfIsExist = intent.getIntExtra(remindIdIntentKey, DEFAULT_REMIND_ID);
             if (remindIdIfIsExist > 0) {
                 Reminder remind = remindViewModel.getOneById(remindIdIfIsExist);
                 if (remind != null) {
                     showRemindItem(remind);
+                    btnRemove.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -157,11 +158,10 @@ public class ReminderItemActivity extends AppCompatActivity {
                 monthString + dayOfMonth + dayString;
     }
 
-    @OnClick({R.id.btn_select_date, R.id.btn_save_remind, R.id.btn_back, R.id.btn_cancel})
+    @OnClick({R.id.btn_select_date, R.id.btn_save_remind, R.id.btn_back, R.id.btn_remove})
     void btnClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
-            case R.id.btn_cancel:
                 this.finish();
                 break;
             case R.id.btn_select_date:
@@ -188,7 +188,33 @@ public class ReminderItemActivity extends AppCompatActivity {
                     }
                 }
                 break;
+            case R.id.btn_remove:
+                deleteRemindFromDB();
+                this.finish();
+                break;
         }
+    }
+
+    void deleteRemindFromDB() {
+        if (remindIdIfIsExist != 0) {
+            if (remindViewModel.isSetSystemRemind(remindIdIfIsExist)) {
+                cancelNotification();
+            }
+            remindViewModel.deleteRemind(remindIdIfIsExist);
+        }
+    }
+
+    private void cancelNotification() {
+        LocalDateTime now = LocalDateTime.now();
+        /*LocalDateTime targetTime = LocalDateTime.of(selectDate.getYear(), selectDate.getMonth(),
+                selectDate.getDayOfMonth(), TARGET_HOUR, TARGET_MINUTE, TARGET_SECOND);*/
+        LocalDateTime targetTime = LocalDateTime.of(now.getYear(), now.getMonth(),
+                now.getDayOfMonth(), now.getHour(), now.getMinute() + 1, now.getSecond());
+        if (now.isBefore(LocalDateTime.from(targetTime))) {
+            Intent intent = new Intent(this, AlarmService.class);
+            stopService(intent);
+        }
+
     }
 
     void calendarChangeVisibility(Boolean toVisibility) {
@@ -212,14 +238,16 @@ public class ReminderItemActivity extends AppCompatActivity {
             return;
         }
         LocalDateTime now = LocalDateTime.now();
+        /*LocalDateTime targetTime = LocalDateTime.of(selectDate.getYear(), selectDate.getMonth(),
+                selectDate.getDayOfMonth(), TARGET_HOUR, TARGET_MINUTE, TARGET_SECOND);*/
         LocalDateTime targetTime = LocalDateTime.of(now.getYear(), now.getMonth(),
                 now.getDayOfMonth(), now.getHour(), now.getMinute() + 1, now.getSecond());
         if (now.isAfter(targetTime)) {
             return;
         }
         Intent intent = new Intent(this, AlarmService.class);
-        intent.setPackage(getPackageName());
-        intent.setAction(getPackageName() + ".AlarmService");
+        intent.setPackage(packageName);
+        intent.setAction(serviceAction);
         intent.putExtra(AlarmService.TITLE_KEY, this.title);
         intent.putExtra(AlarmService.DESC_KEY, this.desc);
         intent.putExtra(AlarmService.TIME_KEY, targetTime.toString());

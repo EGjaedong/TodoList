@@ -135,7 +135,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
-        android:id="@+id/btn_cancel"
+        android:id="@+id/btn_remove"
         android:layout_width="@dimen/btn_save_remind_size"
         android:layout_height="@dimen/btn_save_remind_size"
         android:layout_marginEnd="@dimen/btn_save_remind_margin"

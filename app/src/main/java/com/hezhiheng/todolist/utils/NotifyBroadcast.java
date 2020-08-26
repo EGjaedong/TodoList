@@ -13,8 +13,8 @@ public class NotifyBroadcast extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action != null && action.equals(AlarmUtil.INTENT_ALARM_ACTION)) {
-            String title = intent.getStringExtra("title");
-            String desc = intent.getStringExtra("desc");
+            String title = intent.getStringExtra(AlarmService.TITLE_KEY);
+            String desc = intent.getStringExtra(AlarmService.DESC_KEY);
             NotificationHelper notificationHelper = new NotificationHelper(context);
             NotificationCompat.Builder builder = notificationHelper.getNotification(title, desc);
             builder.build();

@@ -86,6 +86,16 @@ public class ReminderItemViewModel extends ViewModel {
         return this.updateRemind(createRemind(id, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
     }
 
+    public void deleteRemind(int id) {
+        Reminder remindToDelete = getOneById(id);
+        reminderRepository.deleteOne(remindToDelete);
+        loadReminders();
+    }
+
+    public boolean isSetSystemRemind(int id) {
+        return getOneById(id).isSystemRemind();
+    }
+
     private Reminder createRemind(int id, String title, String desc, LocalDate selectDate,
                                   boolean isRemindFinish, boolean isSetSystemRemind) {
         ZonedDateTime zonedDateTime = selectDate.atStartOfDay(ZoneId.systemDefault());
