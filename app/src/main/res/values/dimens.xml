@@ -58,4 +58,7 @@
     <dimen name="btn_add_radius">25dp</dimen>
     <dimen name="btn_more_margin_end">8dp</dimen>
     <dimen name="item_id_text_size">0dp</dimen>
+    <dimen name="btn_logout_width">60dp</dimen>
+    <dimen name="btn_logout_text_size">12sp</dimen>
+    <dimen name="btn_logout_redius">4dp</dimen>
 </resources>

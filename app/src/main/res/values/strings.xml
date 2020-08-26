@@ -27,4 +27,5 @@
     <string name="channel_description">Todo remind</string>
     <string name="channel_id">todo_list_remind</string>
     <string name="remind_id_intent_key" translatable="false">remind_id</string>
+    <string name="btn_logout_text">logout</string>
 </resources>

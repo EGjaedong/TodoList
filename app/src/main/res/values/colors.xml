@@ -31,4 +31,5 @@
     <color name="item_border_color">#EFEFEF</color>
     <color name="text_count_color">#777777</color>
     <color name="finished_remind_title_text_color">#CDCCCE</color>
+    <color name="btn_logout_color">#FFFFFF</color>
 </resources>

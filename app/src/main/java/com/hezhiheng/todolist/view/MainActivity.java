@@ -1,9 +1,13 @@
 package com.hezhiheng.todolist.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -15,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hezhiheng.todolist.R;
+import com.hezhiheng.todolist.ToDoListApplication;
 import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.view.adapter.RemindItemAdapter;
 import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
@@ -50,9 +55,15 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     String channelId;
     @BindString(R.string.remind_id_intent_key)
     String remindIdIntentKey;
+    @BindView(R.id.btn_logout)
+    Button btnLogout;
+    @BindString(R.string.user_already_login_key)
+    String userAlreadyLoginKey;
 
     private ReminderItemViewModel remindViewModel;
     private boolean isFirstShow = true;
+    private SharedPreferences sharedPreferences;
+
 
     private Comparator<Reminder> reminderComparator = (o1, o2) -> {
         if (o1.isFinished() && !o2.isFinished()) {
@@ -93,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        sharedPreferences = ToDoListApplication.getSharedPreferences();
 
         ReminderItemViewModel.Factory factory = new ReminderItemViewModel.Factory();
         remindViewModel = new ViewModelProvider(this, factory).get(ReminderItemViewModel.class);
@@ -154,9 +167,29 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         remindViewModel.updateRemind(reminder);
     }
 
-    @OnClick(R.id.btn_add)
+    @OnClick({R.id.btn_add, R.id.btn_more, R.id.btn_logout})
     void btnClick(View view) {
-        Intent intent = new Intent(this, ReminderItemActivity.class);
+        switch (view.getId()) {
+            case R.id.btn_add:
+                Intent intent = new Intent(this, ReminderItemActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_more:
+                btnLogout.setVisibility(View.VISIBLE);
+                break;
+            case R.id.btn_logout:
+                logout();
+                break;
+        }
+    }
+
+    private void logout() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+        int anInt = sharedPreferences.getInt(userAlreadyLoginKey, 0);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        this.finish();
     }
 }

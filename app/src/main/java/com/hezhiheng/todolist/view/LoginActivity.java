@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hezhiheng.todolist.R;
+import com.hezhiheng.todolist.ToDoListApplication;
 import com.hezhiheng.todolist.enums.UserFindResultEnum;
 import com.hezhiheng.todolist.viewmodel.UserViewModel;
 
@@ -56,8 +57,6 @@ public class LoginActivity extends AppCompatActivity {
     String userNotFound;
     @BindString(R.string.password_error_message)
     String passwordError;
-    @BindString(R.string.user_already_login_file)
-    String userAlreadyLoginFileName;
     @BindString(R.string.user_already_login_key)
     String userAlreadyLoginKey;
     @BindColor(R.color.login_btn_text_available_color)
@@ -72,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_layout);
         UserViewModel.Factory factory = new UserViewModel.Factory();
         model = new ViewModelProvider(this, factory).get(UserViewModel.class);
-        sharedPreferences = getSharedPreferences(userAlreadyLoginFileName, Context.MODE_PRIVATE);
+        sharedPreferences = ToDoListApplication.getSharedPreferences();
         ButterKnife.bind(this);
         btnLogin.setEnabled(false);
         if (judgeUserIsAlreadyLogin()) {
@@ -81,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean judgeUserIsAlreadyLogin() {
-        return sharedPreferences.getInt(userAlreadyLoginKey, DEFAULT_LOGIN_FLAG)
-                == USER_ALREADY_LOGIN_FLAG;
+        int anInt = sharedPreferences.getInt(userAlreadyLoginKey, DEFAULT_LOGIN_FLAG);
+        return anInt == USER_ALREADY_LOGIN_FLAG;
     }
 
     @OnClick({R.id.login_btn, R.id.btn_error_username, R.id.btn_error_password})

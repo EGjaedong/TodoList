@@ -20,6 +20,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="@dimen/btn_logout_width"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_logout_text"
+        android:textAllCaps="false"
+        android:textSize="@dimen/btn_logout_text_size"
+        android:background="@drawable/btn_logout_shape"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/btn_more"
+        app:layout_constraintTop_toBottomOf="@+id/btn_more" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bar_top_guide_line"
         android:layout_width="wrap_content"
