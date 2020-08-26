@@ -16,13 +16,13 @@ import java.time.ZoneOffset;
 public class AlarmUtil {
     private static final int REQUEST_CODE = 0;
     private static final int FLAGS = 0;
-    public static final String INTENT_ALARM_LOG = "com.hezhiheng.todolist.RECEIVER";
+    public static final String INTENT_ALARM_ACTION = "com.hezhiheng.todolist.RECEIVER";
     private static final String TAG = "com.hezhiheng.todolist";
     private final Context mContext = ToDoListApplication.getInstance().getApplicationContext();
 
     public void setAlarm(final String title, final String desc, final LocalDateTime localDateTime) {
         Intent intent = new Intent();
-        intent.setAction(INTENT_ALARM_LOG);
+        intent.setAction(INTENT_ALARM_ACTION);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.setComponent(new ComponentName("com.hezhiheng.todolist", "com.hezhiheng.todolist.utils.NotifyBroadcast"));
         }

@@ -1,7 +1,6 @@
 package com.hezhiheng.todolist.utils;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
