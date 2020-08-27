@@ -68,10 +68,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
-        UserViewModel.Factory factory = new UserViewModel.Factory();
-        model = new ViewModelProvider(this, factory).get(UserViewModel.class);
-        sharedPreferences = ToDoListApplication.getSharedPreferences();
         ButterKnife.bind(this);
+        sharedPreferences = ToDoListApplication.getSharedPreferences();
+        model = new ViewModelProvider(this, new UserViewModel.Factory()).get(UserViewModel.class);
         btnLogin.setEnabled(false);
         if (judgeUserIsAlreadyLogin()) {
             goMainActivity();
@@ -86,14 +85,7 @@ public class LoginActivity extends AppCompatActivity {
     void btnClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
-                UserFindResultEnum loginResult = model.login(editUsername.getText().toString(),
-                        editPassword.getText().toString());
-                if (loginResult != UserFindResultEnum.OK) {
-                    showLoginResult(loginResult);
-                } else {
-                    setAlreadyLogin();
-                    goMainActivity();
-                }
+                login();
                 break;
             case R.id.btn_error_username:
                 showErrorMessage(usernameErrorText);
@@ -104,16 +96,15 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void setAlreadyLogin() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(userAlreadyLoginKey, USER_ALREADY_LOGIN_FLAG);
-        editor.apply();
-    }
-
-    private void goMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        this.finish();
+    private void login() {
+        UserFindResultEnum loginResult = model.login(editUsername.getText().toString(),
+                editPassword.getText().toString());
+        if (loginResult != UserFindResultEnum.OK) {
+            showLoginResult(loginResult);
+        } else {
+            setAlreadyLogin();
+            goMainActivity();
+        }
     }
 
     private void showLoginResult(UserFindResultEnum loginResult) {
@@ -128,6 +119,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showToastOfLoginResult(String loginResultMessage) {
         Toast.makeText(this, loginResultMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setAlreadyLogin() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(userAlreadyLoginKey, USER_ALREADY_LOGIN_FLAG);
+        editor.apply();
+    }
+
+    private void goMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 
     private void showErrorMessage(TextView textView) {
