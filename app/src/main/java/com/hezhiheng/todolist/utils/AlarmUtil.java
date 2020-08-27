@@ -64,7 +64,9 @@ public class AlarmUtil {
 
     public void cancelAlarm(int cancelAlarmId) {
         PendingIntent pendingIntent = pendingIntentMap.get(cancelAlarmId);
-        alarmManager.cancel(pendingIntent);
-        pendingIntentMap.remove(cancelAlarmId);
+        if (pendingIntent != null) {
+            alarmManager.cancel(pendingIntent);
+            pendingIntentMap.remove(cancelAlarmId);
+        }
     }
 }

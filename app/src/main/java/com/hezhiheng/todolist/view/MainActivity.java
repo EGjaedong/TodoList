@@ -37,6 +37,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements RemindItemAdapter.CheckItemListener {
+    private ReminderItemViewModel remindViewModel;
+    private boolean isFirstShow = true;
+    private SharedPreferences sharedPreferences;
+
     @BindView(R.id.btn_add)
     ImageButton btnAddRemind;
     @BindView(R.id.text_date)
@@ -58,11 +62,6 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     @BindString(R.string.user_already_login_key)
     String userAlreadyLoginKey;
 
-    private ReminderItemViewModel remindViewModel;
-    private boolean isFirstShow = true;
-    private SharedPreferences sharedPreferences;
-
-
     private Comparator<Reminder> reminderComparator = (o1, o2) -> {
         if (o1.isFinished() && !o2.isFinished()) {
             return 1;
@@ -79,10 +78,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         }
     };
 
-    private
-
-    static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
-
+    private static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         private int space;
 
         public SpacesItemDecoration(int space) {
@@ -105,8 +101,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
 
         sharedPreferences = ToDoListApplication.getSharedPreferences();
 
-        ReminderItemViewModel.Factory factory = new ReminderItemViewModel.Factory();
-        remindViewModel = new ViewModelProvider(this, factory).get(ReminderItemViewModel.class);
+        remindViewModel = new ViewModelProvider(this, new ReminderItemViewModel.Factory()).get(ReminderItemViewModel.class);
 
         showDate();
         List<Reminder> reminderList = remindViewModel.getAllReminders().getValue();
