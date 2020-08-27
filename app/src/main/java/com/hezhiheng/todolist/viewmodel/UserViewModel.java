@@ -1,5 +1,7 @@
 package com.hezhiheng.todolist.viewmodel;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -26,12 +28,13 @@ public class UserViewModel extends ViewModel {
     public UserFindResultEnum login(String username, String password) {
         User user = mUserLiveData.getValue();
         if (user != null) {
-            if (!user.getName().equals(username)){
+            if (!TextUtils.equals(user.getName(), username)) {
                 return UserFindResultEnum.USER_NOT_FOUND;
             }
-            if (user.getName().equals(username) && user.getPassword().equals(MD5Util.md5(password))){
+            if (TextUtils.equals(user.getName(), username) &&
+                    TextUtils.equals(user.getPassword(), MD5Util.md5(password))) {
                 return UserFindResultEnum.OK;
-            }else {
+            } else {
                 return UserFindResultEnum.PASSWORD_ERROR;
             }
         }
