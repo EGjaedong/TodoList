@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.core.app.NotificationCompat;
-
 public class NotifyBroadcast extends BroadcastReceiver {
     private static final int NOTIFICATION_ID = 1;
 
@@ -16,13 +14,7 @@ public class NotifyBroadcast extends BroadcastReceiver {
             String title = intent.getStringExtra(AlarmUtil.TITLE_KEY);
             String desc = intent.getStringExtra(AlarmUtil.DESC_KEY);
             NotificationHelper notificationHelper = new NotificationHelper(context);
-            NotificationCompat.Builder builder = notificationHelper.getNotificationBuilder(title, desc);
-            builder.build();
-            notificationHelper.notify(NOTIFICATION_ID, builder);
-
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.setClass(context, AlarmUtil.class);
-            context.stopService(intent);
+            notificationHelper.sendNotify(NOTIFICATION_ID, title, desc);
         }
     }
 }

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -15,11 +14,9 @@ import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.ToDoListApplication;
 import com.hezhiheng.todolist.view.MainActivity;
 
-import java.time.LocalDateTime;
-
 public class NotificationHelper extends ContextWrapper {
     private NotificationManager mNotificationManager;
-    private Context mContext = ToDoListApplication.getInstance().getApplicationContext();
+    private Context mContext;
 
     private static final String CHANNEL_NAME = "Default Channel";
     private static final String CHANNEL_DESCRIPTION = "Default notify desc";
@@ -29,15 +26,22 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationHelper(Context base) {
         super(base);
+        mContext = ToDoListApplication.getInstance().getApplicationContext();
         channelId = getString(R.string.channel_id);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel mNotificationChannel = new NotificationChannel(channelId, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
             mNotificationChannel.setDescription(CHANNEL_DESCRIPTION);
-            getNotificationManager().createNotificationChannel(mNotificationChannel);
+            mNotificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
+            mNotificationManager.createNotificationChannel(mNotificationChannel);
         }
     }
 
-    public NotificationCompat.Builder getNotificationBuilder(String title, String desc) {
+    public void sendNotify(int id, String title, String desc) {
+        NotificationCompat.Builder builder = createNotificationBuilder(title, desc);
+        mNotificationManager.notify(id, builder.build());
+    }
+
+    private NotificationCompat.Builder createNotificationBuilder(String title, String desc) {
         NotificationCompat.Builder builder = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = new NotificationCompat.Builder(this, channelId);
@@ -56,12 +60,6 @@ public class NotificationHelper extends ContextWrapper {
                 notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(notifyPendingIntent);
         return builder;
-    }
-
-    public void notify(int id, NotificationCompat.Builder builder) {
-        if (getNotificationManager() != null) {
-            getNotificationManager().notify(id, builder.build());
-        }
     }
 
     private NotificationManager getNotificationManager() {
