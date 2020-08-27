@@ -32,12 +32,10 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
         this.mCheckItemListener = checkItemListener;
     }
 
-
     static class RemindViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView dateTextView;
         public TextView idTextView;
-
         public CheckBox itemCheckBox;
 
         public RemindViewHolder(@NonNull View itemView) {
@@ -64,32 +62,18 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
             holder.idTextView.setText(String.valueOf(reminder.getId()));
             holder.titleTextView.setText(reminder.getTitle());
             if (reminder.isFinished()) {
-                holder.titleTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                holder.titleTextView.setTextColor(mContext.getResources().getColor(R.color.finished_remind_title_text_color, null));
+                setTitleTextViewFinish(holder);
             }
             holder.dateTextView.setText(formatDate(reminder.getDate()));
             holder.itemCheckBox.setChecked(reminder.isFinished());
-            holder.itemCheckBox.setOnClickListener(v -> {
-                reminder.setFinished(!reminder.isFinished());
-                holder.itemCheckBox.setChecked(reminder.isFinished());
-                if (null != mCheckItemListener) {
-                    mCheckItemListener.itemChecked(reminder, holder.itemCheckBox.isChecked());
-                }
-                notifyDataSetChanged();
-            });
-
-            if (mOnItemClickListener != null) {
-                holder.itemView.setOnClickListener(v -> mOnItemClickListener.
-                        onItemClick(holder.idTextView, position));
-            }
+            setItemCheckBoxOnClickListener(holder, reminder);
+            setItemViewOnClickListener(holder, position);
         }
     }
 
-    private String formatDate(Date date) {
-        Instant instant = date.toInstant();
-        ZoneId zoneId = ZoneId.systemDefault();
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zoneId);
-        return localDateTime.getMonthValue() + "月" + localDateTime.getDayOfMonth() + "日";
+    private void setTitleTextViewFinish(@NonNull RemindViewHolder holder) {
+        holder.titleTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.titleTextView.setTextColor(mContext.getResources().getColor(R.color.finished_remind_title_text_color, null));
     }
 
     @Override
@@ -97,8 +81,33 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
         return remindList.size();
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
+    }
+
+    private void setItemViewOnClickListener(@NonNull RemindViewHolder holder, int position) {
+        if (mOnItemClickListener != null) {
+            holder.itemView.setOnClickListener(v -> mOnItemClickListener.
+                    onItemClick(holder.idTextView, position));
+        }
+    }
+
+    private void setItemCheckBoxOnClickListener(@NonNull RemindViewHolder holder, Reminder reminder) {
+        holder.itemCheckBox.setOnClickListener(v -> {
+            reminder.setFinished(!reminder.isFinished());
+            holder.itemCheckBox.setChecked(reminder.isFinished());
+            if (null != mCheckItemListener) {
+                mCheckItemListener.itemChecked(reminder, holder.itemCheckBox.isChecked());
+            }
+            notifyDataSetChanged();
+        });
+    }
+
+    private String formatDate(Date date) {
+        Instant instant = date.toInstant();
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zoneId);
+        return localDateTime.getMonthValue() + "月" + localDateTime.getDayOfMonth() + "日";
     }
 
     public interface CheckItemListener {
