@@ -33,7 +33,7 @@ public class UserRepository {
         try {
             String response = new GetResponseTask().execute().get();
             user = gson.fromJson(response, User.class);
-            new SaveUserToDBTask().execute(user);
+            saveUser(user);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -48,5 +48,9 @@ public class UserRepository {
             e.printStackTrace();
         }
         return user;
+    }
+
+    private void saveUser(User user) {
+        new SaveUserToDBTask().execute(user);
     }
 }

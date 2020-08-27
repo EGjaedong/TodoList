@@ -55,7 +55,7 @@ public class ReminderItemViewModel extends ViewModel {
     public boolean saveRemind(String title, String desc, LocalDate selectDate,
                               boolean isRemindFinish, boolean isSetSystemRemind) {
         try {
-            reminderRepository.save(createRemind(NOT_EXIST_REMIND_ID, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
+            reminderRepository.saveOne(createRemind(NOT_EXIST_REMIND_ID, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class ReminderItemViewModel extends ViewModel {
             try {
                 Reminder originalRemind = reminderRepository.getOneById(reminder.getId());
                 if (originalRemind != null) {
-                    remindId = reminderRepository.updateRemind(reminder);
+                    remindId = reminderRepository.updateOne(reminder);
                 }
                 loadReminders();
             } catch (Exception e) {

@@ -12,7 +12,7 @@ import com.hezhiheng.todolist.db.entity.Reminder;
 import java.util.List;
 
 public class ReminderRepository {
-    public void save(Reminder reminder) {
+    public void saveOne(Reminder reminder) {
         new SaveRemindToDBTask().execute(reminder);
     }
 
@@ -20,7 +20,7 @@ public class ReminderRepository {
         return new GetRemindersFromDBTask().execute().get();
     }
 
-    public int updateRemind(Reminder reminder) throws Exception {
+    public int updateOne(Reminder reminder) throws Exception {
         return new UpdateRemindToDBTask().execute(reminder).get();
     }
 
