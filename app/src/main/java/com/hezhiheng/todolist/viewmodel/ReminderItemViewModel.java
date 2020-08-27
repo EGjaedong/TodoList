@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.repository.ReminderRepository;
 
@@ -32,7 +31,6 @@ public class ReminderItemViewModel extends ViewModel {
             mReminders = new MutableLiveData<>();
             loadReminders();
         }
-        List<Reminder> value = mReminders.getValue();
         return mReminders;
     }
 

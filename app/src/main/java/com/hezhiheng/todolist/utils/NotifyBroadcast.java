@@ -16,7 +16,7 @@ public class NotifyBroadcast extends BroadcastReceiver {
             String title = intent.getStringExtra(AlarmUtil.TITLE_KEY);
             String desc = intent.getStringExtra(AlarmUtil.DESC_KEY);
             NotificationHelper notificationHelper = new NotificationHelper(context);
-            NotificationCompat.Builder builder = notificationHelper.getNotification(title, desc);
+            NotificationCompat.Builder builder = notificationHelper.getNotificationBuilder(title, desc);
             builder.build();
             notificationHelper.notify(NOTIFICATION_ID, builder);
 

@@ -3,6 +3,7 @@ package com.hezhiheng.todolist.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -236,10 +237,8 @@ public class ReminderItemActivity extends AppCompatActivity {
             return;
         }
         LocalDateTime now = LocalDateTime.now();
-        /*LocalDateTime targetTime = LocalDateTime.of(selectDate.getYear(), selectDate.getMonth(),
-                selectDate.getDayOfMonth(), TARGET_HOUR, TARGET_MINUTE, TARGET_SECOND);*/
-        LocalDateTime targetTime = LocalDateTime.of(now.getYear(), now.getMonth(),
-                now.getDayOfMonth(), now.getHour(), now.getMinute() + 1, now.getSecond());
+        LocalDateTime targetTime = LocalDateTime.of(selectDate.getYear(), selectDate.getMonth(),
+                selectDate.getDayOfMonth(), TARGET_HOUR, TARGET_MINUTE, TARGET_SECOND);
         if (now.isAfter(targetTime)) {
             return;
         }

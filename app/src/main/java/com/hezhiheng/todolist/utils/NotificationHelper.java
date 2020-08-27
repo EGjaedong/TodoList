@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -14,11 +15,12 @@ import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.ToDoListApplication;
 import com.hezhiheng.todolist.view.MainActivity;
 
+import java.time.LocalDateTime;
+
 public class NotificationHelper extends ContextWrapper {
     private NotificationManager mNotificationManager;
     private Context mContext = ToDoListApplication.getInstance().getApplicationContext();
 
-    public static final String CHANNEL_ID = "Default notify";
     private static final String CHANNEL_NAME = "Default Channel";
     private static final String CHANNEL_DESCRIPTION = "Default notify desc";
     private static final int REQUEST_CODE = 0;
@@ -29,13 +31,13 @@ public class NotificationHelper extends ContextWrapper {
         super(base);
         channelId = getString(R.string.channel_id);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel mNotificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel mNotificationChannel = new NotificationChannel(channelId, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
             mNotificationChannel.setDescription(CHANNEL_DESCRIPTION);
             getNotificationManager().createNotificationChannel(mNotificationChannel);
         }
     }
 
-    public NotificationCompat.Builder getNotification(String title, String desc) {
+    public NotificationCompat.Builder getNotificationBuilder(String title, String desc) {
         NotificationCompat.Builder builder = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = new NotificationCompat.Builder(this, channelId);

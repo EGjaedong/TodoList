@@ -52,6 +52,7 @@ public class AlarmUtil {
         }
         intent.putExtra(TITLE_KEY, title);
         intent.putExtra(DESC_KEY, desc);
+        intent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, requestCode, intent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
         if (alarmManager != null) {
