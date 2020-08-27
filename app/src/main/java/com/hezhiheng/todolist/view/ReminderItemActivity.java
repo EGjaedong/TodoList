@@ -3,7 +3,6 @@ package com.hezhiheng.todolist.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -175,12 +174,12 @@ public class ReminderItemActivity extends AppCompatActivity {
                 getRemindData();
                 if (title != null && !title.equals("") && selectDate != null) {
                     if (!remindIsExist) {
-                        if (remindViewModel.saveRemind(title, desc, selectDate, isRemindFinish, isSetSystemRemind)) {
+                        if (remindViewModel.saveOne(title, desc, selectDate, isRemindFinish, isSetSystemRemind)) {
                             setNotification(isSetSystemRemind);
                             this.finish();
                         }
                     } else {
-                        int updateRemindId = remindViewModel.updateRemind(remindIdIfIsExist, title, desc, selectDate, isRemindFinish, isSetSystemRemind);
+                        int updateRemindId = remindViewModel.updateOne(remindIdIfIsExist, title, desc, selectDate, isRemindFinish, isSetSystemRemind);
                         setNotification(isSetSystemRemind);
                         if (updateRemindId != 0) {
                             this.finish();
@@ -200,7 +199,7 @@ public class ReminderItemActivity extends AppCompatActivity {
             if (remindViewModel.isSetSystemRemind(remindIdIfIsExist)) {
                 cancelNotification();
             }
-            remindViewModel.deleteRemind(remindIdIfIsExist);
+            remindViewModel.deleteOne(remindIdIfIsExist);
         }
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ReminderItemViewModel extends ViewModel {
     private static final int REMIND_UPDATE_ERROR = 0;
-    private static final int NOT_EXIST_REMIND_ID = 0;
+    private static final int DEFAULT_REMIND_ID = 0;
 
     private ReminderRepository reminderRepository;
     private LiveData<List<Reminder>> mReminders;
@@ -26,20 +26,12 @@ public class ReminderItemViewModel extends ViewModel {
         this.reminderRepository = reminderRepository;
     }
 
-    public LiveData<List<Reminder>> getReminders() {
+    public LiveData<List<Reminder>> getAllReminders() {
         if (mReminders == null) {
             mReminders = new MutableLiveData<>();
-            loadReminders();
+            loadAllReminders();
         }
         return mReminders;
-    }
-
-    private void loadReminders() {
-        try {
-            mReminders = reminderRepository.getAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public Reminder getOneById(int id) {
@@ -52,10 +44,10 @@ public class ReminderItemViewModel extends ViewModel {
         return reminder;
     }
 
-    public boolean saveRemind(String title, String desc, LocalDate selectDate,
-                              boolean isRemindFinish, boolean isSetSystemRemind) {
+    public boolean saveOne(String title, String desc, LocalDate selectDate,
+                           boolean isRemindFinish, boolean isSetSystemRemind) {
         try {
-            reminderRepository.saveOne(createRemind(NOT_EXIST_REMIND_ID, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
+            reminderRepository.saveOne(createRemind(DEFAULT_REMIND_ID, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,7 +55,7 @@ public class ReminderItemViewModel extends ViewModel {
         }
     }
 
-    public int updateRemind(Reminder reminder) {
+    public int updateOne(Reminder reminder) {
         int remindId = REMIND_UPDATE_ERROR;
         if (reminder != null) {
             try {
@@ -71,7 +63,7 @@ public class ReminderItemViewModel extends ViewModel {
                 if (originalRemind != null) {
                     remindId = reminderRepository.updateOne(reminder);
                 }
-                loadReminders();
+                loadAllReminders();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,19 +71,27 @@ public class ReminderItemViewModel extends ViewModel {
         return remindId;
     }
 
-    public int updateRemind(int id, String title, String desc, LocalDate selectDate,
-                            boolean isRemindFinish, boolean isSetSystemRemind) {
-        return this.updateRemind(createRemind(id, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
+    public int updateOne(int id, String title, String desc, LocalDate selectDate,
+                         boolean isRemindFinish, boolean isSetSystemRemind) {
+        return this.updateOne(createRemind(id, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
     }
 
-    public void deleteRemind(int id) {
+    public void deleteOne(int id) {
         Reminder remindToDelete = getOneById(id);
         reminderRepository.deleteOne(remindToDelete);
-        loadReminders();
+        loadAllReminders();
     }
 
     public boolean isSetSystemRemind(int id) {
         return getOneById(id).isSystemRemind();
+    }
+
+    private void loadAllReminders() {
+        try {
+            mReminders = reminderRepository.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Reminder createRemind(int id, String title, String desc, LocalDate selectDate,

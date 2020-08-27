@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         remindViewModel = new ViewModelProvider(this, factory).get(ReminderItemViewModel.class);
 
         showDate();
-        List<Reminder> reminderList = remindViewModel.getReminders().getValue();
+        List<Reminder> reminderList = remindViewModel.getAllReminders().getValue();
         showRemindList(reminderList);
         setObserver();
     }
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
                 showRemindList(reminders);
             }
         };
-        remindViewModel.getReminders().observe(this, remindersObserver);
+        remindViewModel.getAllReminders().observe(this, remindersObserver);
     }
 
     private void showRemindList(List<Reminder> reminderList) {
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
 
     @Override
     public void itemChecked(Reminder reminder, boolean isChecked) {
-        remindViewModel.updateRemind(reminder);
+        remindViewModel.updateOne(reminder);
     }
 
     @OnClick({R.id.btn_add, R.id.btn_more, R.id.btn_logout})
