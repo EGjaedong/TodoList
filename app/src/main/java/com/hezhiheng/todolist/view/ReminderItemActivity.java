@@ -206,10 +206,8 @@ public class ReminderItemActivity extends AppCompatActivity {
 
     private void cancelNotification() {
         LocalDateTime now = LocalDateTime.now();
-        /*LocalDateTime targetTime = LocalDateTime.of(selectDate.getYear(), selectDate.getMonth(),
-                selectDate.getDayOfMonth(), TARGET_HOUR, TARGET_MINUTE, TARGET_SECOND);*/
-        LocalDateTime targetTime = LocalDateTime.of(now.getYear(), now.getMonth(),
-                now.getDayOfMonth(), now.getHour(), now.getMinute() + 1, now.getSecond());
+        LocalDateTime targetTime = LocalDateTime.of(selectDate.getYear(), selectDate.getMonth(),
+                selectDate.getDayOfMonth(), TARGET_HOUR, TARGET_MINUTE, TARGET_SECOND);
         if (now.isBefore(LocalDateTime.from(targetTime))) {
             alarmUtil.cancelAlarm(remindIdIfIsExist);
         }

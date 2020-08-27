@@ -2,14 +2,11 @@ package com.hezhiheng.todolist.async;
 
 import android.os.AsyncTask;
 
-import com.hezhiheng.todolist.ToDoListApplication;
-import com.hezhiheng.todolist.db.dao.UserDao;
 import com.hezhiheng.todolist.db.entity.User;
-import com.hezhiheng.todolist.db.roomdatabases.AppDatabase;
 
 public class GetUserFromDBTask extends AsyncTask<Void, Void, User> implements DatabaseTaskBase {
     @Override
     protected User doInBackground(Void... voids) {
-        return userDao.getUserByName();
+        return userDao.getFirstUser();
     }
 }

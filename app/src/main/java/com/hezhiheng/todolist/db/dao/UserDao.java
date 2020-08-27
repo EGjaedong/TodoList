@@ -9,7 +9,7 @@ import com.hezhiheng.todolist.db.entity.User;
 @Dao
 public interface UserDao {
     @Query("select * from user limit 0,1")
-    User getUserByName();
+    User getFirstUser();
 
     @Insert
     void insertOne(User user);
