@@ -19,14 +19,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.ToDoListApplication;
 import com.hezhiheng.todolist.db.entity.Reminder;
+import com.hezhiheng.todolist.utils.AlarmUtil;
 import com.hezhiheng.todolist.view.adapter.RemindItemAdapter;
 import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     private ReminderItemViewModel remindViewModel;
     private boolean isFirstShow = true;
     private SharedPreferences sharedPreferences;
+    private static final int TARGET_HOUR = 6;
+    private static final int TARGET_MINUTE = 0;
+    private static final int TARGET_SECOND = 0;
+    private AlarmUtil alarmUtil;
 
     @BindView(R.id.btn_add)
     ImageButton btnAddRemind;
@@ -103,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
 
         remindViewModel = new ViewModelProvider(this, new ReminderItemViewModel.Factory()).get(ReminderItemViewModel.class);
 
+        alarmUtil = AlarmUtil.getInstance();
+
         showDate();
         List<Reminder> reminderList = remindViewModel.getAllReminders().getValue();
         showRemindList(reminderList);
@@ -158,7 +168,22 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     @Override
     public void itemChecked(Reminder reminder, boolean isChecked) {
         remindViewModel.updateOne(reminder);
+        cancelNotification(reminder);
     }
+
+    private void cancelNotification(Reminder reminder) {
+        if (reminder.isSystemRemind()) {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDate localDate = reminder.getDate().toInstant()
+                    .atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDateTime targetTime = LocalDateTime.of(localDate.getYear(), localDate.getMonth(),
+                    localDate.getDayOfMonth(), TARGET_HOUR, TARGET_MINUTE, TARGET_SECOND);
+            if (now.isBefore(LocalDateTime.from(targetTime))) {
+                alarmUtil.cancelAlarm(reminder.getId());
+            }
+        }
+    }
+
 
     @OnClick({R.id.btn_add, R.id.btn_more, R.id.btn_logout})
     void btnClick(View view) {

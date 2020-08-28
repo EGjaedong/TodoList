@@ -208,7 +208,6 @@ public class ReminderItemActivity extends AppCompatActivity {
         if (now.isBefore(LocalDateTime.from(targetTime))) {
             alarmUtil.cancelAlarm(remindIdIfIsExist);
         }
-
     }
 
     private void calendarChangeVisibility(Boolean toVisibility) {
