@@ -61,11 +61,4 @@ public class NotificationHelper extends ContextWrapper {
         builder.setContentIntent(notifyPendingIntent);
         return builder;
     }
-
-    private NotificationManager getNotificationManager() {
-        if (mNotificationManager == null) {
-            mNotificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
-        }
-        return mNotificationManager;
-    }
 }

@@ -9,10 +9,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.repository.ReminderRepository;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 public class ReminderItemViewModel extends ViewModel {
@@ -44,10 +40,9 @@ public class ReminderItemViewModel extends ViewModel {
         return reminder;
     }
 
-    public boolean saveOne(String title, String desc, LocalDate selectDate,
-                           boolean isRemindFinish, boolean isSetSystemRemind) {
+    public boolean saveOne(Reminder reminder) {
         try {
-            reminderRepository.saveOne(createRemind(DEFAULT_REMIND_ID, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
+            reminderRepository.saveOne(reminder);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,11 +66,6 @@ public class ReminderItemViewModel extends ViewModel {
         return remindId;
     }
 
-    public int updateOne(int id, String title, String desc, LocalDate selectDate,
-                         boolean isRemindFinish, boolean isSetSystemRemind) {
-        return this.updateOne(createRemind(id, title, desc, selectDate, isRemindFinish, isSetSystemRemind));
-    }
-
     public void deleteOne(int id) {
         Reminder remindToDelete = getOneById(id);
         reminderRepository.deleteOne(remindToDelete);
@@ -92,16 +82,6 @@ public class ReminderItemViewModel extends ViewModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private Reminder createRemind(int id, String title, String desc, LocalDate selectDate,
-                                  boolean isRemindFinish, boolean isSetSystemRemind) {
-        ZonedDateTime zonedDateTime = selectDate.atStartOfDay(ZoneId.systemDefault());
-        Date date = Date.from(zonedDateTime.toInstant());
-        if (id != 0) {
-            return new Reminder(id, title, desc, date, isRemindFinish, isSetSystemRemind);
-        }
-        return new Reminder(title, desc, date, isRemindFinish, isSetSystemRemind);
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
