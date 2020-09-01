@@ -35,14 +35,12 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
     static class RemindViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView dateTextView;
-        public TextView idTextView;
         public CheckBox itemCheckBox;
 
         public RemindViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.remind_title_text_in_main);
             dateTextView = itemView.findViewById(R.id.remind_date_text_in_main);
-            idTextView = itemView.findViewById(R.id.item_id);
             itemCheckBox = itemView.findViewById(R.id.finish_check_box_in_list);
         }
 
@@ -59,7 +57,6 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
     public void onBindViewHolder(@NonNull RemindViewHolder holder, int position) {
         Reminder reminder = remindList.get(position);
         if (reminder != null) {
-            holder.idTextView.setText(String.valueOf(reminder.getId()));
             holder.titleTextView.setText(reminder.getTitle());
             if (reminder.isFinished()) {
                 setTitleTextViewFinish(holder);
@@ -88,7 +85,7 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
     private void setItemViewOnClickListener(@NonNull RemindViewHolder holder, int position) {
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(v -> mOnItemClickListener.
-                    onItemClick(holder.idTextView, position));
+                    onItemClick(position));
         }
     }
 
@@ -115,6 +112,6 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(int position);
     }
 }

@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     private static final int TARGET_MINUTE = 0;
     private static final int TARGET_SECOND = 0;
     private AlarmUtil alarmUtil;
+    private List<Reminder> reminderList;
 
     @BindView(R.id.btn_add)
     ImageButton btnAddRemind;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         alarmUtil = AlarmUtil.getInstance();
 
         showDate();
-        List<Reminder> reminderList = remindViewModel.getAllReminders().getValue();
+        reminderList = remindViewModel.getAllReminders().getValue();
         showRemindList(reminderList);
         setObserver();
     }
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     private void setObserver() {
         final Observer<List<Reminder>> remindersObserver = reminders -> {
             if (reminders.size() != 0) {
+                reminderList = reminders;
                 showRemindList(reminders);
             }
         };
@@ -145,11 +147,10 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     }
 
     private void setItemClickListener(RemindItemAdapter remindItemAdapter) {
-        remindItemAdapter.setOnItemClickListener((view, position) -> {
-            TextView idTextView = (TextView) view;
-            String idString = idTextView.getText().toString();
+        remindItemAdapter.setOnItemClickListener(position -> {
+            Reminder reminder = reminderList.get(position);
             Intent intent = new Intent(MainActivity.this, ReminderItemActivity.class);
-            intent.putExtra(remindIdIntentKey, Integer.parseInt(idString));
+            intent.putExtra(remindIdIntentKey, reminder.getId());
             startActivity(intent);
         });
     }
