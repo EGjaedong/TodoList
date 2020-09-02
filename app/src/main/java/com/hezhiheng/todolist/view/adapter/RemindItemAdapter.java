@@ -43,7 +43,6 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
             dateTextView = itemView.findViewById(R.id.remind_date_text_in_main);
             itemCheckBox = itemView.findViewById(R.id.finish_check_box_in_list);
         }
-
     }
 
     @NonNull

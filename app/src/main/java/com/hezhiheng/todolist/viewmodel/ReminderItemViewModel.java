@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.repository.ReminderRepository;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class ReminderItemViewModel extends ViewModel {
@@ -16,6 +17,22 @@ public class ReminderItemViewModel extends ViewModel {
 
     private ReminderRepository reminderRepository;
     private LiveData<List<Reminder>> mReminders;
+
+    private Comparator<Reminder> reminderComparator = (o1, o2) -> {
+        if (o1.isFinished() && !o2.isFinished()) {
+            return 1;
+        } else if (!o1.isFinished() && o2.isFinished()) {
+            return -1;
+        } else {
+            if (o1.getDate().before(o2.getDate())) {
+                return -1;
+            } else if (o1.getDate().after(o2.getDate())) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    };
 
     public ReminderItemViewModel(ReminderRepository reminderRepository) {
         this.reminderRepository = reminderRepository;
@@ -82,6 +99,10 @@ public class ReminderItemViewModel extends ViewModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void sortReminderList(List<Reminder> reminderList) {
+        reminderList.sort(reminderComparator);
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

@@ -75,22 +75,6 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
     private SpacesItemDecoration spacesItemDecoration = new SpacesItemDecoration(itemSpace);
 
-    private Comparator<Reminder> reminderComparator = (o1, o2) -> {
-        if (o1.isFinished() && !o2.isFinished()) {
-            return 1;
-        } else if (!o1.isFinished() && o2.isFinished()) {
-            return -1;
-        } else {
-            if (o1.getDate().before(o2.getDate())) {
-                return -1;
-            } else if (o1.getDate().after(o2.getDate())) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-    };
-
     private static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         private int space;
 
@@ -126,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     private void setObserver() {
         final Observer<List<Reminder>> remindersObserver = reminders -> {
             if (reminders.size() != 0) {
-                reminderList = reminders;
                 showRemindList(reminders);
             }
         };
@@ -135,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
 
     private void showRemindList(List<Reminder> reminderList) {
         if (reminderList != null && reminderList.size() != 0) {
-            reminderList.sort(reminderComparator);
+            remindViewModel.sortReminderList(reminderList);
             remindItemAdapter = new RemindItemAdapter(this,
                     reminderList, this);
             setItemClickListener(remindItemAdapter);
