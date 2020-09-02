@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.db.entity.Reminder;
 import com.hezhiheng.todolist.utils.AlarmUtil;
-import com.hezhiheng.todolist.utils.DataFormatUtil;
+import com.hezhiheng.todolist.utils.DateFormatUtil;
 import com.hezhiheng.todolist.viewmodel.ReminderItemViewModel;
 
 import java.time.Instant;
@@ -180,14 +180,14 @@ public class ReminderItemActivity extends AppCompatActivity {
         if (title != null && !title.equals("") && selectDate != null) {
             if (!remindIsExist) {
                 if (remindViewModel.saveOne(new Reminder(title, desc,
-                        DataFormatUtil.transLocalDateToDate(selectDate),
+                        DateFormatUtil.transLocalDateToDate(selectDate),
                         isRemindFinish, isSetSystemRemind))) {
                     setNotification(isSetSystemRemind);
                     this.finish();
                 }
             } else {
                 int updateRemindId = remindViewModel.updateOne(new Reminder(remindIdIfIsExist,
-                        title, desc, DataFormatUtil.transLocalDateToDate(selectDate),
+                        title, desc, DateFormatUtil.transLocalDateToDate(selectDate),
                         isRemindFinish, isSetSystemRemind));
                 setNotification(isSetSystemRemind);
                 if (updateRemindId != 0) {

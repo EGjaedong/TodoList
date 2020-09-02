@@ -13,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hezhiheng.todolist.R;
 import com.hezhiheng.todolist.db.entity.Reminder;
+import com.hezhiheng.todolist.utils.DateFormatUtil;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -113,9 +112,7 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
     }
 
     private String formatDate(Date date) {
-        Instant instant = date.toInstant();
-        ZoneId zoneId = ZoneId.systemDefault();
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zoneId);
+        LocalDateTime localDateTime = DateFormatUtil.transDateToLocalDateTime(date);
         return localDateTime.getMonthValue() + "月" + localDateTime.getDayOfMonth() + "日";
     }
 
