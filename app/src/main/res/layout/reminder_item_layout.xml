@@ -97,6 +97,7 @@
         android:background="@drawable/remind_edit_text_background"
         android:hint="@string/remind_title_text"
         android:inputType="text"
+        android:maxLines="1"
         android:paddingStart="@dimen/remind_title_text_padding"
         android:paddingEnd="@dimen/remind_title_text_padding"
         android:textColor="@color/remind_title_text_color"
@@ -112,7 +113,7 @@
         android:background="@drawable/remind_edit_text_background"
         android:gravity="start"
         android:hint="@string/remind_desc_text"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         android:lineSpacingExtra="@dimen/remind_desc_line_space"
         android:paddingStart="@dimen/remind_desc_padding"
         android:paddingTop="@dimen/remind_desc_padding"
@@ -140,10 +141,10 @@
         android:layout_height="@dimen/btn_save_remind_size"
         android:layout_marginEnd="@dimen/btn_save_remind_margin"
         android:layout_marginBottom="@dimen/btn_save_remind_margin"
-        android:visibility="gone"
         android:background="@color/btn_save_background_color"
         android:contentDescription="@string/btn_save_remind_desc"
         android:src="@mipmap/radio_delete_gray"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_save_remind" />
 
