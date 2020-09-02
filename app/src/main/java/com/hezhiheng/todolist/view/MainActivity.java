@@ -160,9 +160,23 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         Month month = localDate.getMonth();
         int dayOfMonth = localDate.getDayOfMonth();
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
-        String dayText = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", "
-                + dayOfMonth + "th";
-        textDate.setText(dayText);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ENGLISH)).append(", ").append(dayOfMonth);
+        switch (dayOfMonth) {
+            case 1:
+                stringBuilder.append("st");
+                break;
+            case 2:
+                stringBuilder.append("nd");
+                break;
+            case 3:
+                stringBuilder.append("rd");
+                break;
+            default:
+                stringBuilder.append("th");
+                break;
+        }
+        textDate.setText(stringBuilder.toString());
         textMonth.setText(month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH));
     }
 
