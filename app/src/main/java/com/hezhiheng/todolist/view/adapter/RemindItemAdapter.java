@@ -24,16 +24,14 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
 
     private List<Reminder> remindList;
     private Context mContext;
-    private CheckItemListener mCheckItemListener;
     public OnItemClickListener mOnItemClickListener;
 
-    public RemindItemAdapter(Context mContext, List<Reminder> remindList, CheckItemListener checkItemListener) {
+    public RemindItemAdapter(Context mContext, List<Reminder> remindList) {
         this.mContext = mContext;
         this.remindList = remindList;
-        this.mCheckItemListener = checkItemListener;
     }
 
-    static class RemindViewHolder extends RecyclerView.ViewHolder {
+    class RemindViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView titleTextView;
         public TextView dateTextView;
         public CheckBox itemCheckBox;
@@ -43,6 +41,15 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
             titleTextView = itemView.findViewById(R.id.remind_title_text_in_main);
             dateTextView = itemView.findViewById(R.id.remind_date_text_in_main);
             itemCheckBox = itemView.findViewById(R.id.finish_check_box_in_list);
+            itemView.setOnClickListener(this);
+            itemCheckBox.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(v, getAdapterPosition());
+            }
         }
     }
 
@@ -69,9 +76,16 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
             }
             holder.dateTextView.setText(formatDate(reminder.getDate()));
             holder.itemCheckBox.setChecked(reminder.isFinished());
-            setItemCheckBoxOnClickListener(holder, reminder);
-            setItemViewOnClickListener(holder, position);
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return remindList.size();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
     }
 
     private void setTitleTextViewUnFinish(@NonNull RemindViewHolder holder) {
@@ -84,43 +98,12 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
         holder.titleTextView.setTextColor(mContext.getResources().getColor(R.color.finished_remind_title_text_color, null));
     }
 
-    @Override
-    public int getItemCount() {
-        return remindList.size();
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.mOnItemClickListener = listener;
-    }
-
-    private void setItemViewOnClickListener(@NonNull RemindViewHolder holder, int position) {
-        if (mOnItemClickListener != null) {
-            holder.itemView.setOnClickListener(v -> mOnItemClickListener.
-                    onItemClick(position));
-        }
-    }
-
-    private void setItemCheckBoxOnClickListener(@NonNull RemindViewHolder holder, Reminder reminder) {
-        holder.itemCheckBox.setOnClickListener(v -> {
-            reminder.setFinished(!reminder.isFinished());
-            holder.itemCheckBox.setChecked(reminder.isFinished());
-            if (null != mCheckItemListener) {
-                mCheckItemListener.itemChecked(reminder, holder.itemCheckBox.isChecked());
-            }
-            notifyDataSetChanged();
-        });
-    }
-
     private String formatDate(Date date) {
         LocalDateTime localDateTime = DateFormatUtil.transDateToLocalDateTime(date);
         return localDateTime.getMonthValue() + "月" + localDateTime.getDayOfMonth() + "日";
     }
 
-    public interface CheckItemListener {
-        void itemChecked(Reminder reminder, boolean isChecked);
-    }
-
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(View v, int adapterPosition);
     }
 }

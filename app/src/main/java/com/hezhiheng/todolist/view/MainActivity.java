@@ -29,8 +29,6 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,7 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements RemindItemAdapter.CheckItemListener {
+public class MainActivity extends AppCompatActivity {
     private ReminderItemViewModel remindViewModel;
     private boolean isFirstShow = true;
     private SharedPreferences sharedPreferences;
@@ -90,6 +88,21 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         }
     }
 
+    private RemindItemAdapter.OnItemClickListener itemClickListener = (view, position) -> {
+        Reminder reminder = reminderList.get(position);
+        if (view.getId() == R.id.finish_check_box_in_list) {
+            reminder.setFinished(!reminder.isFinished());
+            remindViewModel.updateOne(reminder);
+            remindViewModel.sortReminderList(reminderList);
+            cancelNotification(reminder);
+            remindItemAdapter.notifyDataSetChanged();
+        } else {
+            Intent intent = new Intent(MainActivity.this, ReminderItemActivity.class);
+            intent.putExtra(remindIdIntentKey, reminder.getId());
+            startActivity(intent);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,9 +143,10 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     private void showRemindList(List<Reminder> reminderList) {
         if (reminderList != null && reminderList.size() != 0) {
             remindViewModel.sortReminderList(reminderList);
-            remindItemAdapter = new RemindItemAdapter(this,
-                    reminderList, this);
-            setItemClickListener(remindItemAdapter);
+            remindItemAdapter = new RemindItemAdapter(this, reminderList);
+            // TODO: 2020/9/2 setOnItemClickListener
+            // setItemClickListener(remindItemAdapter);
+            remindItemAdapter.setOnItemClickListener(itemClickListener);
             remindListContainer.setAdapter(remindItemAdapter);
             remindListContainer.setLayoutManager(linearLayoutManager);
             if (isFirstShow) {
@@ -141,15 +155,6 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
             }
             textRemindCount.setText(getString(R.string.remind_count, reminderList.size()));
         }
-    }
-
-    private void setItemClickListener(RemindItemAdapter remindItemAdapter) {
-        remindItemAdapter.setOnItemClickListener(position -> {
-            Reminder reminder = reminderList.get(position);
-            Intent intent = new Intent(MainActivity.this, ReminderItemActivity.class);
-            intent.putExtra(remindIdIntentKey, reminder.getId());
-            startActivity(intent);
-        });
     }
 
     private void showDate() {
@@ -175,12 +180,6 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
         }
         textDate.setText(stringBuilder.toString());
         textMonth.setText(month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH));
-    }
-
-    @Override
-    public void itemChecked(Reminder reminder, boolean isChecked) {
-        remindViewModel.updateOne(reminder);
-        cancelNotification(reminder);
     }
 
     private void cancelNotification(Reminder reminder) {
