@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.List;
 
 public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.RemindViewHolder> {
+    private final int removeAllFlag = 0;
+
     private List<Reminder> remindList;
     private Context mContext;
     private CheckItemListener mCheckItemListener;
@@ -45,6 +47,10 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
         }
     }
 
+    public void setRemindList(List<Reminder> remindList) {
+        this.remindList = remindList;
+    }
+
     @NonNull
     @Override
     public RemindViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,12 +65,19 @@ public class RemindItemAdapter extends RecyclerView.Adapter<RemindItemAdapter.Re
             holder.titleTextView.setText(reminder.getTitle());
             if (reminder.isFinished()) {
                 setTitleTextViewFinish(holder);
+            } else {
+                setTitleTextViewUnFinish(holder);
             }
             holder.dateTextView.setText(formatDate(reminder.getDate()));
             holder.itemCheckBox.setChecked(reminder.isFinished());
             setItemCheckBoxOnClickListener(holder, reminder);
             setItemViewOnClickListener(holder, position);
         }
+    }
+
+    private void setTitleTextViewUnFinish(@NonNull RemindViewHolder holder) {
+        holder.titleTextView.getPaint().setFlags(removeAllFlag);
+        holder.titleTextView.setTextColor(mContext.getResources().getColor(R.color.item_title_color, null));
     }
 
     private void setTitleTextViewFinish(@NonNull RemindViewHolder holder) {

@@ -28,6 +28,7 @@
             android:maxEms="12"
             android:maxLines="1"
             android:textSize="@dimen/remind_title_text_size"
+            android:textColor="@color/item_title_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/finish_check_box_in_list"
             app:layout_constraintTop_toTopOf="parent"

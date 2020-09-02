@@ -110,10 +110,21 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     private void setObserver() {
         final Observer<List<Reminder>> remindersObserver = reminders -> {
             if (reminders.size() != 0) {
-                showRemindList(reminders);
+                reminderList = reminders;
+                if (isFirstShow) {
+                    showRemindList(reminders);
+                } else {
+                    updateReminderListShow();
+                }
             }
         };
         remindViewModel.getAllReminders().observe(this, remindersObserver);
+    }
+
+    private void updateReminderListShow() {
+        remindViewModel.sortReminderList(reminderList);
+        remindItemAdapter.setRemindList(reminderList);
+        remindItemAdapter.notifyDataSetChanged();
     }
 
     private void showRemindList(List<Reminder> reminderList) {
