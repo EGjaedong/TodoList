@@ -71,6 +71,10 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     @BindString(R.string.user_already_login_key)
     String userAlreadyLoginKey;
 
+    private RemindItemAdapter remindItemAdapter;
+    private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+    private SpacesItemDecoration spacesItemDecoration = new SpacesItemDecoration(itemSpace);
+
     private Comparator<Reminder> reminderComparator = (o1, o2) -> {
         if (o1.isFinished() && !o2.isFinished()) {
             return 1;
@@ -116,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
 
         showDate();
         reminderList = remindViewModel.getAllReminders().getValue();
-        showRemindList(reminderList);
         setObserver();
     }
 
@@ -133,13 +136,13 @@ public class MainActivity extends AppCompatActivity implements RemindItemAdapter
     private void showRemindList(List<Reminder> reminderList) {
         if (reminderList != null && reminderList.size() != 0) {
             reminderList.sort(reminderComparator);
-            RemindItemAdapter remindItemAdapter = new RemindItemAdapter(this,
+            remindItemAdapter = new RemindItemAdapter(this,
                     reminderList, this);
             setItemClickListener(remindItemAdapter);
             remindListContainer.setAdapter(remindItemAdapter);
-            remindListContainer.setLayoutManager(new LinearLayoutManager(this));
+            remindListContainer.setLayoutManager(linearLayoutManager);
             if (isFirstShow) {
-                remindListContainer.addItemDecoration(new SpacesItemDecoration(itemSpace));
+                remindListContainer.addItemDecoration(spacesItemDecoration);
                 isFirstShow = false;
             }
             textRemindCount.setText(getString(R.string.remind_count, reminderList.size()));

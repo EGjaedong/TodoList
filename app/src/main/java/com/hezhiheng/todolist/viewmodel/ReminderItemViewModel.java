@@ -13,7 +13,6 @@ import java.util.List;
 
 public class ReminderItemViewModel extends ViewModel {
     private static final int REMIND_UPDATE_ERROR = 0;
-    private static final int DEFAULT_REMIND_ID = 0;
 
     private ReminderRepository reminderRepository;
     private LiveData<List<Reminder>> mReminders;
@@ -43,6 +42,7 @@ public class ReminderItemViewModel extends ViewModel {
     public boolean saveOne(Reminder reminder) {
         try {
             reminderRepository.saveOne(reminder);
+            loadAllReminders();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
